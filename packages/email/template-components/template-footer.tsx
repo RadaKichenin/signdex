@@ -39,9 +39,9 @@ export const TemplateFooter = ({ isDocument = true }: TemplateFooterProps) => {
 
       {!branding.brandingEnabled && (
         <Text className="my-8 text-sm text-slate-400">
-          SignDex, Inc.
+          SignDex Sdn Bhd.
           <br />
-          2261 Market Street, #5211, San Francisco, CA 94114, USA
+          Unit 21- 11, Tower – A, The Vertical Business Suite, Kuala Lumpur 59200, Malaysia
         </Text>
       )}
     </Section>
