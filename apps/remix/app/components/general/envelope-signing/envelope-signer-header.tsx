@@ -40,12 +40,12 @@ export const EnvelopeSignerHeader = () => {
               <img
                 src={`/api/branding/logo/team/${envelope.teamId}`}
                 alt={`${envelope.team.name}'s Logo`}
-                className="h-6 w-auto"
+                className="h-8 w-auto"
               />
             ) : (
               <>
-                <BrandingLogo className="hidden h-6 w-auto md:block" />
-                <BrandingLogoIcon className="h-6 w-auto md:hidden" />
+                <BrandingLogo className="hidden h-8 w-auto md:block" />
+                <BrandingLogoIcon className="h-8 w-auto md:hidden" />
               </>
             )}
           </Link>
@@ -58,7 +58,7 @@ export const EnvelopeSignerHeader = () => {
           {envelope.title}
         </h1>
 
-        {!isEmbedSigning && <Separator orientation="vertical" className="hidden h-6 md:block" />}
+        {!isEmbedSigning && <Separator orientation="vertical" className="hidden h-8 md:block" />}
 
         <div className="hidden items-center space-x-2 md:flex">
           <h1 className="whitespace-nowrap text-sm font-medium text-foreground">
