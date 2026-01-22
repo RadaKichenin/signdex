@@ -500,6 +500,24 @@ enum DocumentDistributionMethod {
   NONE
 }
 
+model Certificate {
+  id        String   @id @default(cuid())
+  name      String
+  data      Bytes /// Encrypted .p12 certificate file
+  passphrase String /// Encrypted passphrase
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  documentMetas DocumentMeta[]
+
+  @@index([teamId])
+  @@index([isDefault])
+}
+
 /// @zod.import(["import { ZDocumentEmailSettingsSchema } from '@documenso/lib/types/document-email';"])
 model DocumentMeta {
   id                     String               @id @default(cuid())
@@ -522,7 +540,12 @@ model DocumentMeta {
   emailReplyTo  String?
   emailId       String?
 
+  certificateId String?
+  certificate   Certificate? @relation(fields: [certificateId], references: [id], onDelete: SetNull)
+
   envelope Envelope?
+
+  @@index([certificateId])
 }
 
 /// @zod.import(["import { ZEnvelopeAttachmentTypeSchema } from '@documenso/lib/types/envelope-attachment';"])
@@ -894,11 +917,12 @@ model Team {
 
   profile TeamProfile?
 
-  envelopes  Envelope[]
-  folders    Folder[]
-  apiTokens  ApiToken[]
-  webhooks   Webhook[]
-  teamGroups TeamGroup[]
+  envelopes    Envelope[]
+  folders      Folder[]
+  apiTokens    ApiToken[]
+  webhooks     Webhook[]
+  teamGroups   TeamGroup[]
+  certificates Certificate[]
 
   organisationId String
   organisation   Organisation @relation(fields: [organisationId], references: [id], onDelete: Cascade)

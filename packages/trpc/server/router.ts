@@ -1,6 +1,7 @@
 import { adminRouter } from './admin-router/router';
 import { apiTokenRouter } from './api-token-router/router';
 import { authRouter } from './auth-router/router';
+import { certificateRouter } from './certificate-router/router';
 import { documentRouter } from './document-router/router';
 import { embeddingPresignRouter } from './embedding-router/_router';
 import { enterpriseRouter } from './enterprise-router/router';
@@ -31,6 +32,7 @@ export const appRouter = router({
   template: templateRouter,
   webhook: webhookRouter,
   embeddingPresign: embeddingPresignRouter,
+  certificate: certificateRouter,
 });
 
 export type AppRouter = typeof appRouter;

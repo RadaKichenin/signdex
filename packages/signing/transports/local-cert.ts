@@ -1,17 +1,25 @@
 import * as fs from 'node:fs';
 
 import { getCertificateStatus } from '@documenso/lib/server-only/cert/cert-status';
+import { getCertificateData } from '@documenso/lib/server-only/certificate/certificate';
 import { env } from '@documenso/lib/utils/env';
 import { signWithP12 } from '@documenso/pdf-sign';
+import { prisma } from '@documenso/prisma';
 
 import { addSigningPlaceholder } from '../helpers/add-signing-placeholder';
 import { updateSigningPlaceholder } from '../helpers/update-signing-placeholder';
 
 export type SignWithLocalCertOptions = {
   pdf: Buffer;
+  certificateId?: string | null;
+  teamId?: number;
 };
 
-export const signWithLocalCert = async ({ pdf }: SignWithLocalCertOptions) => {
+export const signWithLocalCert = async ({
+  pdf,
+  certificateId,
+  teamId,
+}: SignWithLocalCertOptions) => {
   const { pdf: pdfWithPlaceholder, byteRange } = updateSigningPlaceholder({
     pdf: await addSigningPlaceholder({ pdf }),
   });
@@ -31,14 +39,55 @@ export const signWithLocalCert = async ({ pdf }: SignWithLocalCertOptions) => {
   }
 
   let cert: Buffer | null = null;
+  let passphrase: string | undefined;
 
-  const localFileContents = env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_CONTENTS');
-
-  if (localFileContents) {
+  // Try to load certificate from database if certificateId is provided
+  if (certificateId && teamId) {
     try {
-      cert = Buffer.from(localFileContents, 'base64');
-    } catch {
-      throw new Error('Failed to decode certificate contents');
+      const certData = await getCertificateData({ certificateId, teamId });
+      cert = certData.data;
+      passphrase = certData.passphrase;
+    } catch (error) {
+      console.error('Certificate error: Failed to load certificate from database', error);
+      // Fall through to try other methods
+    }
+  }
+
+  // If no certificate from database, try to load default certificate for the team
+  if (!cert && teamId) {
+    try {
+      const defaultCert = await prisma.certificate.findFirst({
+        where: {
+          teamId,
+          isDefault: true,
+        },
+      });
+
+      if (defaultCert) {
+        const certData = await getCertificateData({
+          certificateId: defaultCert.id,
+          teamId,
+        });
+        cert = certData.data;
+        passphrase = certData.passphrase;
+      }
+    } catch (error) {
+      console.error('Certificate error: Failed to load default certificate', error);
+      // Fall through to try environment variables
+    }
+  }
+
+  // Fall back to environment variable certificate
+  if (!cert) {
+    const localFileContents = env('NEXT_PRIVATE_SIGNING_LOCAL_FILE_CONTENTS');
+
+    if (localFileContents) {
+      try {
+        cert = Buffer.from(localFileContents, 'base64');
+        passphrase = env('NEXT_PRIVATE_SIGNING_PASSPHRASE') || undefined;
+      } catch {
+        throw new Error('Failed to decode certificate contents');
+      }
     }
   }
 
@@ -56,6 +105,7 @@ export const signWithLocalCert = async ({ pdf }: SignWithLocalCertOptions) => {
 
     try {
       cert = Buffer.from(fs.readFileSync(certPath));
+      passphrase = env('NEXT_PRIVATE_SIGNING_PASSPHRASE') || undefined;
     } catch {
       console.error('Certificate error: Failed to read certificate file');
       throw new Error('Document signing failed: Certificate file not accessible');
@@ -65,7 +115,7 @@ export const signWithLocalCert = async ({ pdf }: SignWithLocalCertOptions) => {
   const signature = signWithP12({
     cert,
     content: pdfWithoutSignature,
-    password: env('NEXT_PRIVATE_SIGNING_PASSPHRASE') || undefined,
+    password: passphrase,
   });
 
   const signatureAsHex = signature.toString('hex');
