@@ -2286,6 +2286,10 @@ msgstr "Ccers"
 msgid "Center"
 msgstr "Center"
 
+#: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
+msgid "Certificate"
+msgstr "Certificate"
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "Certificate deleted successfully"
 msgstr "Certificate deleted successfully"

@@ -1,16 +1,15 @@
+import type { PDF } from '@libpdf/core';
+import { P12Signer } from '@libpdf/core';
 import * as fs from 'node:fs';
 
+import { NEXT_PUBLIC_WEBAPP_URL } from '@documenso/lib/constants/app';
 import { getCertificateStatus } from '@documenso/lib/server-only/cert/cert-status';
 import { getCertificateData } from '@documenso/lib/server-only/certificate/certificate';
 import { env } from '@documenso/lib/utils/env';
-import { signWithP12 } from '@documenso/pdf-sign';
 import { prisma } from '@documenso/prisma';
 
-import { addSigningPlaceholder } from '../helpers/add-signing-placeholder';
-import { updateSigningPlaceholder } from '../helpers/update-signing-placeholder';
-
 export type SignWithLocalCertOptions = {
-  pdf: Buffer;
+  pdf: PDF;
   certificateId?: string | null;
   teamId?: number;
 };
@@ -126,41 +125,44 @@ export const signWithLocalCert = async ({
     }
   }
 
-  const { pdf: pdfWithPlaceholder, byteRange } = updateSigningPlaceholder({
-    pdf: await addSigningPlaceholder({ pdf, certificateName }),
-  });
-
-  const pdfWithoutSignature = Buffer.concat([
-    new Uint8Array(pdfWithPlaceholder.subarray(0, byteRange[1])),
-    new Uint8Array(pdfWithPlaceholder.subarray(byteRange[2])),
-  ]);
-
-  const signatureLength = byteRange[2] - byteRange[1];
-
-  console.log('[CERT DEBUG] About to call signWithP12:', {
+  console.log('[CERT DEBUG] About to sign with P12Signer:', {
     hasCert: !!cert,
     certSize: cert?.length,
     hasPassword: !!passphrase,
     passwordLength: passphrase?.length,
     passwordType: typeof passphrase,
-    passwordIsEmpty: passphrase === '',
-    passwordIsUndefined: passphrase === undefined,
-    pdfSize: pdfWithoutSignature.length,
+    certificateName,
+    certPreview: cert?.toString('hex').substring(0, 40),
   });
 
-  const signature = signWithP12({
-    cert,
-    content: pdfWithoutSignature,
-    password: passphrase,
-  });
+  try {
+    // Create P12 signer with modern encryption support
+    const signer = await P12Signer.create(new Uint8Array(cert), passphrase || '', {
+      buildChain: true,
+    });
 
-  const signatureAsHex = signature.toString('hex');
+    console.log('[CERT DEBUG] P12Signer created successfully');
 
-  const signedPdf = Buffer.concat([
-    new Uint8Array(pdfWithPlaceholder.subarray(0, byteRange[1])),
-    new Uint8Array(Buffer.from(`<${signatureAsHex.padEnd(signatureLength - 2, '0')}>`)),
-    new Uint8Array(pdfWithPlaceholder.subarray(byteRange[2])),
-  ]);
+    // Sign the PDF using the new API
+    const { bytes } = await pdf.sign({
+      signer,
+      reason: certificateName ? `Signed with: ${certificateName}` : 'Signed by Documenso',
+      location: NEXT_PUBLIC_WEBAPP_URL(),
+      contactInfo: NEXT_PUBLIC_WEBAPP_URL(),
+      subFilter: 'ETSI.CAdES.detached',
+    });
 
-  return signedPdf;
+    console.log('[CERT DEBUG] PDF signed successfully, size:', bytes.length);
+
+    return Buffer.from(bytes);
+  } catch (error) {
+    console.error('[CERT DEBUG] Signing failed with detailed error:', {
+      errorMessage: error instanceof Error ? error.message : String(error),
+      errorStack: error instanceof Error ? error.stack : undefined,
+      errorName: error instanceof Error ? error.name : undefined,
+      certSize: cert?.length,
+      passphraseLength: passphrase?.length,
+    });
+    throw error;
+  }
 };

@@ -7,6 +7,7 @@ import {
   rotateDegrees,
   translate,
 } from '@cantoo/pdf-lib';
+import { PDF } from '@libpdf/core';
 import type { DocumentData, Envelope, EnvelopeItem, Field } from '@prisma/client';
 import {
   DocumentStatus,
@@ -495,8 +496,11 @@ const decorateAndSignPdf = async ({
 
   const pdfBytes = await pdfDoc.save();
 
+  // Convert to @libpdf/core PDF object for signing
+  const pdfForSigning = await PDF.load(pdfBytes);
+
   const pdfBuffer = await signPdf({
-    pdf: Buffer.from(pdfBytes),
+    pdf: pdfForSigning,
     certificateId: envelope.documentMeta?.certificateId,
     teamId: envelope.teamId,
   });

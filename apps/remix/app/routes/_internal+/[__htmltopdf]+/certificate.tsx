@@ -22,6 +22,7 @@ import { DOCUMENT_AUDIT_LOG_TYPE } from '@documenso/lib/types/document-audit-log
 import { extractDocumentAuthMethods } from '@documenso/lib/utils/document-auth';
 import { mapSecondaryIdToDocumentId } from '@documenso/lib/utils/envelope';
 import { getTranslations } from '@documenso/lib/utils/i18n';
+import { prisma } from '@documenso/prisma';
 import { Card, CardContent } from '@documenso/ui/primitives/card';
 import {
   Table,
@@ -78,6 +79,16 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const messages = await getTranslations(documentLanguage);
 
+  // Fetch certificate name if certificateId exists
+  let certificateName: string | null = null;
+  if (envelope.documentMeta?.certificateId) {
+    const certificate = await prisma.certificate.findUnique({
+      where: { id: envelope.documentMeta.certificateId },
+      select: { name: true },
+    });
+    certificateName = certificate?.name || null;
+  }
+
   return {
     document: {
       id: mapSecondaryIdToDocumentId(envelope.secondaryId),
@@ -98,6 +109,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     hidePoweredBy: organisationClaim.flags.hidePoweredBy,
     documentLanguage,
     auditLogs,
+    certificateName,
     messages,
   };
 }
@@ -112,7 +124,8 @@ export async function loader({ request }: Route.LoaderArgs) {
  * Update: Maybe <Trans> tags work now after RR7 migration.
  */
 export default function SigningCertificate({ loaderData }: Route.ComponentProps) {
-  const { document, documentLanguage, hidePoweredBy, auditLogs, messages } = loaderData;
+  const { document, documentLanguage, hidePoweredBy, auditLogs, certificateName, messages } =
+    loaderData;
 
   const { i18n, _ } = useLingui();
 
@@ -374,6 +387,13 @@ export default function SigningCertificate({ loaderData }: Route.ComponentProps)
                                 )}
                           </span>
                         </p>
+
+                        {certificateName && (
+                          <p className="text-sm text-muted-foreground print:text-xs">
+                            <span className="font-medium">{_(msg`Certificate`)}:</span>{' '}
+                            <span className="inline-block">{certificateName}</span>
+                          </p>
+                        )}
                       </div>
                     </TableCell>
                   </TableRow>

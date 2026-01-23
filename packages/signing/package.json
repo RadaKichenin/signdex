@@ -12,7 +12,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@documenso/pdf-sign": "^0.1.0",
+    "@libpdf/core": "^0.2.0",
     "@documenso/tsconfig": "*",
     "ts-pattern": "^5.9.0"
   },
