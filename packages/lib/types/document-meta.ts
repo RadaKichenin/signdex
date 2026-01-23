@@ -28,6 +28,7 @@ export const ZDocumentMetaSchema = DocumentMetaSchema.pick({
   drawSignatureEnabled: true,
   language: true,
   emailSettings: true,
+  certificateId: true,
 });
 
 export type TDocumentMeta = z.infer<typeof ZDocumentMetaSchema>;
@@ -128,6 +129,7 @@ export const ZDocumentMetaCreateSchema = z.object({
   emailId: z.string().nullish(),
   emailReplyTo: z.string().email().nullish(),
   emailSettings: ZDocumentEmailSettingsSchema.nullish(),
+  certificateId: z.string().nullish(),
 });
 
 export type TDocumentMetaCreate = z.infer<typeof ZDocumentMetaCreateSchema>;

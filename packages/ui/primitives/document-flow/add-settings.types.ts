@@ -46,6 +46,7 @@ export const ZAddSettingsFormSchema = z.object({
     signatureTypes: z.array(z.nativeEnum(DocumentSignatureType)).min(1, {
       message: msg`At least one signature type must be enabled`.id,
     }),
+    certificateId: z.string().optional().nullable(),
   }),
 });
 

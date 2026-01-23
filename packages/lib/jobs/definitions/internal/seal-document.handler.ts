@@ -337,7 +337,12 @@ export const run = async ({
 };
 
 type DecorateAndSignPdfOptions = {
-  envelope: Pick<Envelope, 'id' | 'title' | 'useLegacyFieldInsertion' | 'internalVersion'>;
+  envelope: Pick<
+    Envelope,
+    'id' | 'title' | 'useLegacyFieldInsertion' | 'internalVersion' | 'teamId'
+  > & {
+    documentMeta: { certificateId?: string | null } | null;
+  };
   envelopeItem: EnvelopeItem & { documentData: DocumentData };
   envelopeItemFields: Field[];
   isRejected: boolean;
@@ -490,7 +495,11 @@ const decorateAndSignPdf = async ({
 
   const pdfBytes = await pdfDoc.save();
 
-  const pdfBuffer = await signPdf({ pdf: Buffer.from(pdfBytes) });
+  const pdfBuffer = await signPdf({
+    pdf: Buffer.from(pdfBytes),
+    certificateId: envelope.documentMeta?.certificateId,
+    teamId: envelope.teamId,
+  });
 
   const { name } = path.parse(envelopeItem.title);
 

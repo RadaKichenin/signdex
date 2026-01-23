@@ -3,6 +3,7 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import {
   Building2Icon,
   CreditCardIcon,
+  FileKeyIcon,
   GroupIcon,
   MailboxIcon,
   Settings2Icon,
@@ -57,6 +58,11 @@ export default function SettingsLayout() {
       path: `/o/${organisation.url}/settings/email`,
       label: t`Email`,
       isSubNav: true,
+    },
+    {
+      path: `/o/${organisation.url}/settings/certificates`,
+      label: t`Certificates`,
+      icon: FileKeyIcon,
     },
     {
       path: `/o/${organisation.url}/settings/email-domains`,

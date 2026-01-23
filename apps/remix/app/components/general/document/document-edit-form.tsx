@@ -59,6 +59,8 @@ export const DocumentEditForm = ({
 
   const utils = trpc.useUtils();
 
+  const { data: certificates = [] } = trpc.certificate.list.useQuery();
+
   const { data: document, refetch: refetchDocument } = trpc.document.get.useQuery(
     {
       documentId: initialDocument.id,
@@ -466,6 +468,7 @@ export const DocumentEditForm = ({
               currentTeamMemberRole={team.currentTeamRole}
               recipients={recipients}
               fields={fields}
+              certificates={certificates}
               isDocumentPdfLoaded={isDocumentPdfLoaded}
               onSubmit={onAddSettingsFormSubmit}
               onAutoSave={onAddSettingsFormAutoSave}

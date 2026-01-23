@@ -1809,6 +1809,10 @@ msgstr "Are you sure you want to complete the document? This action cannot be un
 msgid "Are you sure you want to delete the following claim?"
 msgstr "Are you sure you want to delete the following claim?"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Are you sure you want to delete this certificate?"
+msgstr "Are you sure you want to delete this certificate?"
+
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 msgid "Are you sure you want to delete this folder?"
 msgstr "Are you sure you want to delete this folder?"
@@ -2228,6 +2232,7 @@ msgstr "Can prepare"
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.linked-accounts.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/document-flow/send-document-action-dialog.tsx
@@ -2280,6 +2285,26 @@ msgstr "Ccers"
 #: apps/remix/app/components/forms/editor/editor-field-generic-field-forms.tsx
 msgid "Center"
 msgstr "Center"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate deleted successfully"
+msgstr "Certificate deleted successfully"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate File (.p12)"
+msgstr "Certificate File (.p12)"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate Name"
+msgstr "Certificate Name"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate uploaded successfully"
+msgstr "Certificate uploaded successfully"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
+msgid "Certificates"
+msgstr "Certificates"
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page-renderer.tsx
 msgid "Change Recipient"
@@ -3076,6 +3101,16 @@ msgstr "David is the Employee, Lucas is the Manager"
 #: packages/email/templates/organisation-invite.tsx
 msgid "Decline"
 msgstr "Decline"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Default"
+msgstr "Default"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Default certificate updated"
+msgstr "Default certificate updated"
 
 #: apps/remix/app/components/forms/document-preferences-form.tsx
 msgid "Default Date Format"
@@ -4037,6 +4072,10 @@ msgstr "E.g. 0"
 msgid "E.g. 100"
 msgstr "E.g. 100"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "e.g., Company Certificate 2024"
+msgstr "e.g., Company Certificate 2024"
+
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
@@ -4341,6 +4380,10 @@ msgstr "Enter"
 msgid "Enter a name for your new folder. Folders help you organise your items."
 msgstr "Enter a name for your new folder. Folders help you organise your items."
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Enter certificate passphrase"
+msgstr "Enter certificate passphrase"
+
 #: apps/remix/app/components/forms/subscription-claim-form.tsx
 msgid "Enter claim name"
 msgstr "Enter claim name"
@@ -4526,6 +4569,9 @@ msgstr "Envelope updated"
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.linked-accounts.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
@@ -4625,6 +4671,10 @@ msgstr "Failed to create subscription claim."
 msgid "Failed to create support ticket"
 msgstr "Failed to create support ticket"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Failed to delete certificate"
+msgstr "Failed to delete certificate"
+
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 msgid "Failed to delete folder"
 msgstr "Failed to delete folder"
@@ -4653,6 +4703,10 @@ msgstr "Failed to revoke session"
 msgid "Failed to save settings."
 msgstr "Failed to save settings."
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Failed to set default certificate"
+msgstr "Failed to set default certificate"
+
 #: apps/remix/app/components/dialogs/session-logout-all-dialog.tsx
 msgid "Failed to sign out all sessions"
 msgstr "Failed to sign out all sessions"
@@ -4680,6 +4734,10 @@ msgstr "Failed to update template"
 #: apps/remix/app/components/dialogs/webhook-edit-dialog.tsx
 msgid "Failed to update webhook"
 msgstr "Failed to update webhook"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Failed to upload certificate"
+msgstr "Failed to upload certificate"
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Failed to upload CSV. Please check the file format and try again."
@@ -5623,6 +5681,10 @@ msgstr "Looking for signature fields"
 msgid "Manage"
 msgstr "Manage"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Manage .p12 certificates used for signing documents. Upload multiple certificates and select which one to use for each document."
+msgstr "Manage .p12 certificates used for signing documents. Upload multiple certificates and select which one to use for each document."
+
 #. placeholder {0}: user?.name
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
 msgid "Manage {0}'s profile"
@@ -6037,6 +6099,10 @@ msgstr "No"
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "No active drafts"
 msgstr "No active drafts"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "No certificates uploaded"
+msgstr "No certificates uploaded"
 
 #: apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
@@ -6529,6 +6595,10 @@ msgstr "Passkeys allow you to sign in and authenticate using biometrics, passwor
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Passkeys are not supported on this browser"
 msgstr "Passkeys are not supported on this browser"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Passphrase"
+msgstr "Passphrase"
 
 #: apps/remix/app/components/forms/reset-password.tsx
 #: apps/remix/app/components/forms/signin.tsx
@@ -7769,6 +7839,11 @@ msgstr "Select signature types"
 msgid "Select text align"
 msgstr "Select text align"
 
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Select the certificate to use for signing this document. If not selected, the default certificate will be used."
+msgstr "Select the certificate to use for signing this document. If not selected, the default certificate will be used."
+
 #: apps/remix/app/components/dialogs/envelope-download-dialog.tsx
 msgid "Select the files you would like to download."
 msgstr "Select the files you would like to download."
@@ -7912,6 +7987,14 @@ msgstr "Sessions have been revoked"
 #: apps/remix/app/components/general/claim-account.tsx
 msgid "Set a password"
 msgstr "Set a password"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Set as Default"
+msgstr "Set as Default"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Set as default certificate"
+msgstr "Set as default certificate"
 
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 msgid "Set up your document properties and recipient information"
@@ -8161,8 +8244,10 @@ msgctxt "Recipient role progressive verb"
 msgid "Signing"
 msgstr "Signing"
 
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 #: packages/lib/server-only/pdf/render-certificate.ts
+#: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Signing Certificate"
 msgstr "Signing Certificate"
 
@@ -8170,6 +8255,10 @@ msgstr "Signing Certificate"
 #: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Signing certificate provided by"
 msgstr "Signing certificate provided by"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Signing Certificates"
+msgstr "Signing Certificates"
 
 #: packages/lib/server-only/document/send-completed-email.ts
 #: packages/lib/server-only/document/send-completed-email.ts
@@ -8507,6 +8596,9 @@ msgstr "Subscription Status"
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
@@ -10043,6 +10135,7 @@ msgid "Upgrade your plan to upload more documents"
 msgstr "Upgrade your plan to upload more documents"
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "Upload"
 msgstr "Upload"
 
@@ -10051,6 +10144,14 @@ msgstr "Upload"
 msgctxt "Upload signature"
 msgid "Upload"
 msgstr "Upload"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload a .p12 certificate file with its passphrase. This certificate will be used to sign documents."
+msgstr "Upload a .p12 certificate file with its passphrase. This certificate will be used to sign documents."
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload a .p12 certificate to start signing documents"
+msgstr "Upload a .p12 certificate to start signing documents"
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Upload a CSV file to create multiple documents from this template. Each row represents one document with its recipient details."
@@ -10067,6 +10168,10 @@ msgstr "Upload and Process"
 #: apps/remix/app/components/forms/avatar-image.tsx
 msgid "Upload Avatar"
 msgstr "Upload Avatar"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload Certificate"
+msgstr "Upload Certificate"
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Upload CSV"
@@ -10100,6 +10205,10 @@ msgstr "Upload failed"
 msgid "Upload Signature"
 msgstr "Upload Signature"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload Signing Certificate"
+msgstr "Upload Signing Certificate"
+
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: packages/ui/primitives/document-upload-button.tsx
 msgid "Upload Template"
@@ -10112,6 +10221,11 @@ msgstr "Upload Template Document"
 #: apps/remix/app/components/forms/branding-preferences-form.tsx
 msgid "Upload your brand logo (max 5MB, JPG, PNG, or WebP)"
 msgstr "Upload your brand logo (max 5MB, JPG, PNG, or WebP)"
+
+#. placeholder {0}: new Date(cert.createdAt).toLocaleDateString()
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Uploaded {0}"
+msgstr "Uploaded {0}"
 
 #: apps/remix/app/components/general/document/document-page-view-information.tsx
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
@@ -10152,6 +10266,15 @@ msgstr "Use Authenticator"
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Use Backup Code"
 msgstr "Use Backup Code"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Use default certificate"
+msgstr "Use default certificate"
+
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Use default certificate or environment settings"
+msgstr "Use default certificate or environment settings"
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-header.tsx
