@@ -1550,6 +1550,7 @@ msgid "An error occurred while enabling the user."
 msgstr "Er is een fout opgetreden tijdens het inschakelen van de gebruiker."
 
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "An error occurred while loading the document."
 msgstr "Er is een fout opgetreden tijdens het laden van het document."
 
@@ -4589,6 +4590,7 @@ msgstr "Envelope bijgewerkt"
 #: apps/remix/app/routes/embed+/v1+/authoring+/template.edit.$id.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Error"
 msgstr "Fout"
 
@@ -5645,6 +5647,7 @@ msgstr "Laden"
 #: apps/remix/app/components/general/skeletons/document-edit-skeleton.tsx
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Loading document..."
 msgstr "Document wordt geladen..."
 
@@ -6557,6 +6560,10 @@ msgstr "Pagina {0} van {1}"
 msgid "Page {0} of {numPages}"
 msgstr "Pagina {0} van {numPages}"
 
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+msgid "Page {pageNumber} of {numPages}"
+msgstr ""
+
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 msgctxt "Subscription status"
 msgid "Paid"
@@ -6926,6 +6933,8 @@ msgstr "Probeer het opnieuw en controleer of je het juiste e‑mailadres hebt in
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Please try again or contact our support."
 msgstr "Probeer het opnieuw of neem contact op met onze ondersteuning."
 
@@ -8391,6 +8400,8 @@ msgstr "Er is iets misgegaan bij het detecteren van ontvangers."
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Something went wrong while loading the document."
 msgstr "Er is iets misgegaan tijdens het laden van het document."
 

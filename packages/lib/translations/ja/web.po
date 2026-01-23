@@ -1550,6 +1550,7 @@ msgid "An error occurred while enabling the user."
 msgstr "ユーザーの有効化中にエラーが発生しました。"
 
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "An error occurred while loading the document."
 msgstr "ドキュメントの読み込み中にエラーが発生しました。"
 
@@ -4589,6 +4590,7 @@ msgstr "封筒を更新しました"
 #: apps/remix/app/routes/embed+/v1+/authoring+/template.edit.$id.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Error"
 msgstr "エラー"
 
@@ -5645,6 +5647,7 @@ msgstr "読み込み中"
 #: apps/remix/app/components/general/skeletons/document-edit-skeleton.tsx
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Loading document..."
 msgstr "文書を読み込み中..."
 
@@ -6557,6 +6560,10 @@ msgstr "ページ {0} / {1}"
 msgid "Page {0} of {numPages}"
 msgstr "ページ {0} / {numPages}"
 
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+msgid "Page {pageNumber} of {numPages}"
+msgstr ""
+
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 msgctxt "Subscription status"
 msgid "Paid"
@@ -6926,6 +6933,8 @@ msgstr "もう一度お試しいただき、正しいメールアドレスが入
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Please try again or contact our support."
 msgstr "もう一度お試しいただくか、サポートにお問い合わせください。"
 
@@ -8391,6 +8400,8 @@ msgstr "受信者の検出中に問題が発生しました。"
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Something went wrong while loading the document."
 msgstr "ドキュメントの読み込み中に問題が発生しました。"
 

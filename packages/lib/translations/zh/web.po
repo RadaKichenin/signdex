@@ -1550,6 +1550,7 @@ msgid "An error occurred while enabling the user."
 msgstr "启用用户时发生错误。"
 
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "An error occurred while loading the document."
 msgstr "加载文档时发生错误。"
 
@@ -4589,6 +4590,7 @@ msgstr "信封已更新"
 #: apps/remix/app/routes/embed+/v1+/authoring+/template.edit.$id.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Error"
 msgstr "错误"
 
@@ -5645,6 +5647,7 @@ msgstr "正在加载"
 #: apps/remix/app/components/general/skeletons/document-edit-skeleton.tsx
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Loading document..."
 msgstr "正在加载文档..."
 
@@ -6557,6 +6560,10 @@ msgstr "第 {0} 页，共 {1} 页"
 msgid "Page {0} of {numPages}"
 msgstr "第 {0} 页，共 {numPages} 页"
 
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+msgid "Page {pageNumber} of {numPages}"
+msgstr ""
+
 #: apps/remix/app/components/tables/admin-organisations-table.tsx
 msgctxt "Subscription status"
 msgid "Paid"
@@ -6926,6 +6933,8 @@ msgstr "请重试，并确保你输入了正确的邮箱地址。"
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Please try again or contact our support."
 msgstr "请重试或联系我们的支持团队。"
 
@@ -8391,6 +8400,8 @@ msgstr "检测收件人时出现问题。"
 #: packages/ui/components/pdf-viewer/pdf-viewer-konva.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
 #: packages/ui/primitives/pdf-viewer/base.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
+#: packages/ui/primitives/pdf-viewer/virtualized.tsx
 msgid "Something went wrong while loading the document."
 msgstr "加载文档时出现问题。"
 

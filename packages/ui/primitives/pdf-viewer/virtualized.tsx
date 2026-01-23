@@ -5,6 +5,7 @@ import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import type { EnvelopeItem } from '@prisma/client';
 import { base64 } from '@scure/base';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { Loader } from 'lucide-react';
 import { type PDFDocumentProxy } from 'pdfjs-dist';
 import { Document as PDFDocument, Page as PDFPage, pdfjs } from 'react-pdf';
@@ -31,8 +32,9 @@ if (typeof window !== 'undefined') {
 
 const pdfViewerOptions = {
   cMapUrl: `${NEXT_PUBLIC_WEBAPP_URL()}/static/cmaps/`,
-  disableAutoFetch: false, // Enable progressive loading
-  disableStream: false, // Enable streaming for better performance
+  disableAutoFetch: false, // Enable streaming for better performance
+  disableStream: false, // Enable streaming
+  enableXfa: true,
 };
 
 export type OnPDFViewerPageClick = (_event: {
@@ -55,7 +57,7 @@ const PDFLoader = () => (
   </>
 );
 
-export type PDFViewerProps = {
+export type VirtualizedPDFViewerProps = {
   className?: string;
   envelopeItem: Pick<EnvelopeItem, 'id' | 'envelopeId'>;
   token: string | undefined;
@@ -65,10 +67,12 @@ export type PDFViewerProps = {
   onPageClick?: OnPDFViewerPageClick;
   overrideData?: string;
   customPageRenderer?: React.FunctionComponent;
+  pageHeight?: number; // Estimated page height for virtualization (default: 842 for A4)
+  overscan?: number; // Number of pages to render outside viewport (default: 2)
   [key: string]: unknown;
 } & Omit<React.HTMLAttributes<HTMLDivElement>, 'onPageClick'>;
 
-export const PDFViewer = ({
+export const VirtualizedPDFViewer = ({
   className,
   envelopeItem,
   token,
@@ -78,12 +82,15 @@ export const PDFViewer = ({
   onPageClick,
   overrideData,
   customPageRenderer,
+  pageHeight = 842, // Default A4 height at 72 DPI
+  overscan = 2,
   ...props
-}: PDFViewerProps) => {
+}: VirtualizedPDFViewerProps) => {
   const { _ } = useLingui();
   const { toast } = useToast();
 
   const $el = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const [isDocumentBytesLoading, setIsDocumentBytesLoading] = useState(false);
   const [documentBytes, setDocumentBytes] = useState<Uint8Array | null>(
@@ -93,6 +100,7 @@ export const PDFViewer = ({
   const [width, setWidth] = useState(0);
   const [numPages, setNumPages] = useState(0);
   const [pdfError, setPdfError] = useState(false);
+  const [loadedPages, setLoadedPages] = useState<Set<number>>(new Set());
 
   const isLoading = isDocumentBytesLoading || !documentBytes;
 
@@ -105,6 +113,15 @@ export const PDFViewer = ({
       data: documentBytes,
     };
   }, [documentBytes]);
+
+  // Set up virtualization
+  const virtualizer = useVirtualizer({
+    count: numPages,
+    getScrollElement: () => scrollContainerRef.current,
+    estimateSize: () => pageHeight + 40, // Add margin for page label
+    overscan,
+    enabled: numPages > 0,
+  });
 
   const onDocumentLoaded = (doc: LoadedPDFDocument) => {
     setNumPages(doc.numPages);
@@ -143,6 +160,11 @@ export const PDFViewer = ({
         pageY,
       });
     }
+  };
+
+  // Track loaded pages to avoid re-rendering
+  const handlePageLoadSuccess = (pageNumber: number) => {
+    setLoadedPages((prev) => new Set(prev).add(pageNumber));
   };
 
   useEffect(() => {
@@ -186,7 +208,7 @@ export const PDFViewer = ({
           presignToken,
         });
 
-        // Support range requests for better streaming performance
+        // Use range requests if supported by the server
         const response = await fetch(documentUrl, {
           headers: {
             'Accept-Ranges': 'bytes',
@@ -210,7 +232,9 @@ export const PDFViewer = ({
     };
 
     void fetchDocumentBytes();
-  }, [envelopeItem.envelopeId, envelopeItem.id, token, version, toast, overrideData]);
+  }, [envelopeItem.envelopeId, envelopeItem.id, token, version, toast, overrideData, _]);
+
+  const virtualItems = virtualizer.getVirtualItems();
 
   return (
     <div ref={$el} className={cn('overflow-hidden', className)} {...props}>
@@ -224,21 +248,38 @@ export const PDFViewer = ({
         </div>
       ) : (
         <>
-          <PDFDocument
-            file={envelopeItemFile}
-            className={cn('w-full overflow-hidden rounded', {
+          <div
+            ref={scrollContainerRef}
+            className={cn('w-full overflow-auto rounded', {
               'h-[80vh] max-h-[60rem]': numPages === 0,
             })}
-            onLoadSuccess={(d) => onDocumentLoaded(d)}
-            // Uploading a invalid document causes an error which doesn't appear to be handled by the `error` prop.
-            // Therefore we add some additional custom error handling.
-            onSourceError={() => {
-              setPdfError(true);
-            }}
-            externalLinkTarget="_blank"
-            loading={
-              <div className="flex h-[80vh] max-h-[60rem] flex-col items-center justify-center bg-white/50 dark:bg-background">
-                {pdfError ? (
+            style={{ height: '80vh', maxHeight: '60rem' }}
+          >
+            <PDFDocument
+              file={envelopeItemFile}
+              onLoadSuccess={(d) => onDocumentLoaded(d)}
+              onSourceError={() => {
+                setPdfError(true);
+              }}
+              externalLinkTarget="_blank"
+              loading={
+                <div className="flex h-[80vh] max-h-[60rem] flex-col items-center justify-center bg-white/50 dark:bg-background">
+                  {pdfError ? (
+                    <div className="text-center text-muted-foreground">
+                      <p>
+                        <Trans>Something went wrong while loading the document.</Trans>
+                      </p>
+                      <p className="mt-1 text-sm">
+                        <Trans>Please try again or contact our support.</Trans>
+                      </p>
+                    </div>
+                  ) : (
+                    <PDFLoader />
+                  )}
+                </div>
+              }
+              error={
+                <div className="flex h-[80vh] max-h-[60rem] flex-col items-center justify-center bg-white/50 dark:bg-background">
                   <div className="text-center text-muted-foreground">
                     <p>
                       <Trans>Something went wrong while loading the document.</Trans>
@@ -247,53 +288,70 @@ export const PDFViewer = ({
                       <Trans>Please try again or contact our support.</Trans>
                     </p>
                   </div>
-                ) : (
-                  <PDFLoader />
-                )}
-              </div>
-            }
-            error={
-              <div className="flex h-[80vh] max-h-[60rem] flex-col items-center justify-center bg-white/50 dark:bg-background">
-                <div className="text-center text-muted-foreground">
-                  <p>
-                    <Trans>Something went wrong while loading the document.</Trans>
-                  </p>
-                  <p className="mt-1 text-sm">
-                    <Trans>Please try again or contact our support.</Trans>
-                  </p>
                 </div>
-              </div>
-            }
-            options={pdfViewerOptions}
-          >
-            {Array(numPages)
-              .fill(null)
-              .map((_, i) => (
-                <div key={i} className="last:-mb-2">
-                  <div className="overflow-hidden rounded border border-border will-change-transform">
-                    <PDFPage
-                      pageNumber={i + 1}
-                      width={width}
-                      renderAnnotationLayer={false}
-                      renderTextLayer={false}
-                      loading={() => ''}
-                      renderMode={customPageRenderer ? 'custom' : 'canvas'}
-                      customRenderer={customPageRenderer}
-                      onClick={(e) => onDocumentPageClick(e, i + 1)}
-                    />
-                  </div>
-                  <p className="my-2 text-center text-[11px] text-muted-foreground/80">
-                    <Trans>
-                      Page {i + 1} of {numPages}
-                    </Trans>
-                  </p>
+              }
+              options={pdfViewerOptions}
+            >
+              {numPages > 0 && (
+                <div
+                  style={{
+                    height: `${virtualizer.getTotalSize()}px`,
+                    width: '100%',
+                    position: 'relative',
+                  }}
+                >
+                  {virtualItems.map((virtualItem) => {
+                    const pageNumber = virtualItem.index + 1;
+                    return (
+                      <div
+                        key={virtualItem.key}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: `${virtualItem.size}px`,
+                          transform: `translateY(${virtualItem.start}px)`,
+                        }}
+                      >
+                        <div className="last:-mb-2">
+                          <div className="overflow-hidden rounded border border-border will-change-transform">
+                            <PDFPage
+                              pageNumber={pageNumber}
+                              width={width}
+                              renderAnnotationLayer={false}
+                              renderTextLayer={false}
+                              loading={() => (
+                                <div
+                                  className="flex items-center justify-center bg-white/50 dark:bg-background"
+                                  style={{ height: pageHeight, width: '100%' }}
+                                >
+                                  <Loader className="h-8 w-8 animate-spin text-documenso" />
+                                </div>
+                              )}
+                              renderMode={customPageRenderer ? 'custom' : 'canvas'}
+                              customRenderer={customPageRenderer}
+                              onClick={(e) => onDocumentPageClick(e, pageNumber)}
+                              onLoadSuccess={() => handlePageLoadSuccess(pageNumber)}
+                            />
+                          </div>
+                          <p className="my-2 text-center text-[11px] text-muted-foreground/80">
+                            <Trans>
+                              Page {pageNumber} of {numPages}
+                            </Trans>
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
-          </PDFDocument>
+              )}
+            </PDFDocument>
+          </div>
         </>
       )}
     </div>
   );
 };
 
-export default PDFViewer;
+export default VirtualizedPDFViewer;
