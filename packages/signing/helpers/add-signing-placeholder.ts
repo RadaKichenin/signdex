@@ -13,9 +13,13 @@ import { BYTE_RANGE_PLACEHOLDER } from '../constants/byte-range';
 
 export type AddSigningPlaceholderOptions = {
   pdf: Buffer;
+  certificateName?: string;
 };
 
-export const addSigningPlaceholder = async ({ pdf }: AddSigningPlaceholderOptions) => {
+export const addSigningPlaceholder = async ({
+  pdf,
+  certificateName,
+}: AddSigningPlaceholderOptions) => {
   const doc = await PDFDocument.load(pdf);
   const [firstPage] = doc.getPages();
 
@@ -26,6 +30,8 @@ export const addSigningPlaceholder = async ({ pdf }: AddSigningPlaceholderOption
   byteRange.push(PDFName.of(BYTE_RANGE_PLACEHOLDER));
   byteRange.push(PDFName.of(BYTE_RANGE_PLACEHOLDER));
 
+  const reasonText = certificateName ? `Signed with: ${certificateName}` : 'Signed by Documenso';
+
   const signature = doc.context.register(
     doc.context.obj({
       Type: 'Sig',
@@ -33,7 +39,7 @@ export const addSigningPlaceholder = async ({ pdf }: AddSigningPlaceholderOption
       SubFilter: 'adbe.pkcs7.detached',
       ByteRange: byteRange,
       Contents: PDFHexString.fromText(' '.repeat(8192)),
-      Reason: PDFString.of('Signed by Documenso'),
+      Reason: PDFString.of(reasonText),
       M: PDFString.fromDate(new Date()),
     }),
   );

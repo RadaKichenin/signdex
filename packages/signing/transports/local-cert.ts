@@ -20,17 +20,6 @@ export const signWithLocalCert = async ({
   certificateId,
   teamId,
 }: SignWithLocalCertOptions) => {
-  const { pdf: pdfWithPlaceholder, byteRange } = updateSigningPlaceholder({
-    pdf: await addSigningPlaceholder({ pdf }),
-  });
-
-  const pdfWithoutSignature = Buffer.concat([
-    new Uint8Array(pdfWithPlaceholder.subarray(0, byteRange[1])),
-    new Uint8Array(pdfWithPlaceholder.subarray(byteRange[2])),
-  ]);
-
-  const signatureLength = byteRange[2] - byteRange[1];
-
   const certStatus = getCertificateStatus();
 
   if (!certStatus.isAvailable) {
@@ -40,6 +29,7 @@ export const signWithLocalCert = async ({
 
   let cert: Buffer | null = null;
   let passphrase: string | undefined;
+  let certificateName: string | undefined;
 
   // Try to load certificate from database if certificateId is provided
   if (certificateId && teamId) {
@@ -48,14 +38,25 @@ export const signWithLocalCert = async ({
         certificateId,
         teamId,
       });
-      const certData = await getCertificateData({ certificateId, teamId });
-      cert = certData.data;
-      passphrase = certData.passphrase;
+      const certificate = await prisma.certificate.findFirst({
+        where: {
+          id: certificateId,
+          teamId,
+        },
+      });
+
+      if (certificate) {
+        certificateName = certificate.name;
+        const certData = await getCertificateData({ certificateId, teamId });
+        cert = certData.data;
+        passphrase = certData.passphrase;
+      }
       console.log('[CERT DEBUG] Certificate loaded successfully:', {
         certSize: cert?.length,
         hasPassphrase: !!passphrase,
         passphraseLength: passphrase?.length,
         passphraseType: typeof passphrase,
+        certificateName,
       });
     } catch (error) {
       console.error('Certificate error: Failed to load certificate from database', error);
@@ -74,6 +75,7 @@ export const signWithLocalCert = async ({
       });
 
       if (defaultCert) {
+        certificateName = defaultCert.name;
         const certData = await getCertificateData({
           certificateId: defaultCert.id,
           teamId,
@@ -95,6 +97,7 @@ export const signWithLocalCert = async ({
       try {
         cert = Buffer.from(localFileContents, 'base64');
         passphrase = env('NEXT_PRIVATE_SIGNING_PASSPHRASE') || undefined;
+        certificateName = 'Environment Certificate';
       } catch {
         throw new Error('Failed to decode certificate contents');
       }
@@ -116,11 +119,23 @@ export const signWithLocalCert = async ({
     try {
       cert = Buffer.from(fs.readFileSync(certPath));
       passphrase = env('NEXT_PRIVATE_SIGNING_PASSPHRASE') || undefined;
+      certificateName = 'Local File Certificate';
     } catch {
       console.error('Certificate error: Failed to read certificate file');
       throw new Error('Document signing failed: Certificate file not accessible');
     }
   }
+
+  const { pdf: pdfWithPlaceholder, byteRange } = updateSigningPlaceholder({
+    pdf: await addSigningPlaceholder({ pdf, certificateName }),
+  });
+
+  const pdfWithoutSignature = Buffer.concat([
+    new Uint8Array(pdfWithPlaceholder.subarray(0, byteRange[1])),
+    new Uint8Array(pdfWithPlaceholder.subarray(byteRange[2])),
+  ]);
+
+  const signatureLength = byteRange[2] - byteRange[1];
 
   console.log('[CERT DEBUG] About to call signWithP12:', {
     hasCert: !!cert,
