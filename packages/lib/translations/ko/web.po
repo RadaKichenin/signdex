@@ -1814,6 +1814,10 @@ msgstr "문서를 완료하시겠습니까? 이 작업은 되돌릴 수 없습�
 msgid "Are you sure you want to delete the following claim?"
 msgstr "다음 클레임을 삭제하시겠습니까?"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Are you sure you want to delete this certificate?"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 msgid "Are you sure you want to delete this folder?"
 msgstr "이 폴더를 삭제하시겠습니까?"
@@ -2233,6 +2237,7 @@ msgstr "준비 가능"
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
 #: apps/remix/app/components/tables/settings-security-passkey-table-actions.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.linked-accounts.tsx
 #: packages/ui/primitives/document-flow/field-item-advanced-settings.tsx
 #: packages/ui/primitives/document-flow/send-document-action-dialog.tsx
@@ -2285,6 +2290,26 @@ msgstr "Cc 수신자"
 #: apps/remix/app/components/forms/editor/editor-field-generic-field-forms.tsx
 msgid "Center"
 msgstr "가운데"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate deleted successfully"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate File (.p12)"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate Name"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Certificate uploaded successfully"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
+msgid "Certificates"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page-renderer.tsx
 msgid "Change Recipient"
@@ -3081,6 +3106,16 @@ msgstr "David는 직원이고, Lucas는 관리자입니다."
 #: packages/email/templates/organisation-invite.tsx
 msgid "Decline"
 msgstr "거부"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Default"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Default certificate updated"
+msgstr ""
 
 #: apps/remix/app/components/forms/document-preferences-form.tsx
 msgid "Default Date Format"
@@ -4042,6 +4077,10 @@ msgstr "예: 0"
 msgid "E.g. 100"
 msgstr "예: 100"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "e.g., Company Certificate 2024"
+msgstr ""
+
 #: apps/remix/app/components/general/document/document-page-view-button.tsx
 #: apps/remix/app/components/general/document/document-page-view-dropdown.tsx
 #: apps/remix/app/components/general/teams/team-email-dropdown.tsx
@@ -4346,6 +4385,10 @@ msgstr "입력하세요"
 msgid "Enter a name for your new folder. Folders help you organise your items."
 msgstr "새 폴더 이름을 입력하세요. 폴더는 항목을 정리하는 데 도움이 됩니다."
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Enter certificate passphrase"
+msgstr ""
+
 #: apps/remix/app/components/forms/subscription-claim-form.tsx
 msgid "Enter claim name"
 msgstr "클레임 이름 입력"
@@ -4531,6 +4574,9 @@ msgstr "봉투가 업데이트되었습니다"
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.linked-accounts.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
@@ -4630,6 +4676,10 @@ msgstr "구독 클레임을 생성하지 못했습니다."
 msgid "Failed to create support ticket"
 msgstr "지원 티켓을 생성하지 못했습니다"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Failed to delete certificate"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/folder-delete-dialog.tsx
 msgid "Failed to delete folder"
 msgstr "폴더를 삭제하지 못했습니다."
@@ -4658,6 +4708,10 @@ msgstr "세션을 해지하지 못했습니다."
 msgid "Failed to save settings."
 msgstr "설정을 저장하지 못했습니다."
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Failed to set default certificate"
+msgstr ""
+
 #: apps/remix/app/components/dialogs/session-logout-all-dialog.tsx
 msgid "Failed to sign out all sessions"
 msgstr "모든 세션에서 로그아웃하지 못했습니다."
@@ -4685,6 +4739,10 @@ msgstr "템플릿을 업데이트하지 못했습니다."
 #: apps/remix/app/components/dialogs/webhook-edit-dialog.tsx
 msgid "Failed to update webhook"
 msgstr "웹훅을 업데이트하지 못했습니다"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Failed to upload certificate"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Failed to upload CSV. Please check the file format and try again."
@@ -5628,6 +5686,10 @@ msgstr "서명 필드를 찾는 중"
 msgid "Manage"
 msgstr "관리"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Manage .p12 certificates used for signing documents. Upload multiple certificates and select which one to use for each document."
+msgstr ""
+
 #. placeholder {0}: user?.name
 #: apps/remix/app/routes/_authenticated+/admin+/users.$id.tsx
 msgid "Manage {0}'s profile"
@@ -6042,6 +6104,10 @@ msgstr "아니요"
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "No active drafts"
 msgstr "활성 초안 없음"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "No certificates uploaded"
+msgstr ""
 
 #: apps/remix/app/components/general/document-signing/document-signing-page-view-v2.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
@@ -6534,6 +6600,10 @@ msgstr "패스키를 사용하면 생체 인증, 비밀번호 관리자 등을 �
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Passkeys are not supported on this browser"
 msgstr "이 브라우저에서는 패스키가 지원되지 않습니다"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Passphrase"
+msgstr ""
 
 #: apps/remix/app/components/forms/reset-password.tsx
 #: apps/remix/app/components/forms/signin.tsx
@@ -7774,6 +7844,11 @@ msgstr "서명 유형 선택"
 msgid "Select text align"
 msgstr "텍스트 정렬 선택"
 
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Select the certificate to use for signing this document. If not selected, the default certificate will be used."
+msgstr ""
+
 #: apps/remix/app/components/dialogs/envelope-download-dialog.tsx
 msgid "Select the files you would like to download."
 msgstr "다운로드할 파일을 선택하세요."
@@ -7917,6 +7992,14 @@ msgstr "세션이 해지되었습니다."
 #: apps/remix/app/components/general/claim-account.tsx
 msgid "Set a password"
 msgstr "비밀번호 설정"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Set as Default"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Set as default certificate"
+msgstr ""
 
 #: apps/remix/app/components/embed/authoring/configure-document-view.tsx
 msgid "Set up your document properties and recipient information"
@@ -8166,8 +8249,10 @@ msgctxt "Recipient role progressive verb"
 msgid "Signing"
 msgstr "서명 중"
 
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/certificate.tsx
 #: packages/lib/server-only/pdf/render-certificate.ts
+#: packages/ui/primitives/document-flow/add-settings.tsx
 msgid "Signing Certificate"
 msgstr "서명 인증서"
 
@@ -8175,6 +8260,10 @@ msgstr "서명 인증서"
 #: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Signing certificate provided by"
 msgstr "서명 인증서 제공자"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Signing Certificates"
+msgstr ""
 
 #: packages/lib/server-only/document/send-completed-email.ts
 #: packages/lib/server-only/document/send-completed-email.ts
@@ -8512,6 +8601,9 @@ msgstr "구독 상태"
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
@@ -10048,6 +10140,7 @@ msgid "Upgrade your plan to upload more documents"
 msgstr "더 많은 문서를 업로드하려면 요금제를 업그레이드하세요."
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "Upload"
 msgstr "업로드"
 
@@ -10056,6 +10149,14 @@ msgstr "업로드"
 msgctxt "Upload signature"
 msgid "Upload"
 msgstr "업로드"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload a .p12 certificate file with its passphrase. This certificate will be used to sign documents."
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload a .p12 certificate to start signing documents"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Upload a CSV file to create multiple documents from this template. Each row represents one document with its recipient details."
@@ -10072,6 +10173,10 @@ msgstr "업로드 및 처리"
 #: apps/remix/app/components/forms/avatar-image.tsx
 msgid "Upload Avatar"
 msgstr "아바타 업로드"
+
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload Certificate"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/template-bulk-send-dialog.tsx
 msgid "Upload CSV"
@@ -10105,6 +10210,10 @@ msgstr "업로드 실패"
 msgid "Upload Signature"
 msgstr "서명 업로드"
 
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Upload Signing Certificate"
+msgstr ""
+
 #: apps/remix/app/components/general/envelope/envelope-drop-zone-wrapper.tsx
 #: packages/ui/primitives/document-upload-button.tsx
 msgid "Upload Template"
@@ -10117,6 +10226,11 @@ msgstr "템플릿 문서 업로드"
 #: apps/remix/app/components/forms/branding-preferences-form.tsx
 msgid "Upload your brand logo (max 5MB, JPG, PNG, or WebP)"
 msgstr "브랜드 로고를 업로드하세요(최대 5MB, JPG, PNG 또는 WebP)"
+
+#. placeholder {0}: new Date(cert.createdAt).toLocaleDateString()
+#: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+msgid "Uploaded {0}"
+msgstr ""
 
 #: apps/remix/app/components/general/document/document-page-view-information.tsx
 #: apps/remix/app/components/general/template/template-page-view-information.tsx
@@ -10157,6 +10271,15 @@ msgstr "인증 앱 사용"
 #: apps/remix/app/components/forms/signin.tsx
 msgid "Use Backup Code"
 msgstr "백업 코드 사용"
+
+#: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page.tsx
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Use default certificate"
+msgstr ""
+
+#: packages/ui/primitives/document-flow/add-settings.tsx
+msgid "Use default certificate or environment settings"
+msgstr ""
 
 #: apps/remix/app/components/dialogs/template-use-dialog.tsx
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-header.tsx

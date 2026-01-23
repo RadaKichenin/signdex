@@ -5,7 +5,7 @@ import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react';
 import { Trans } from '@lingui/react/macro';
 import { DocumentStatus, FieldType, RecipientRole } from '@prisma/client';
-import { FileTextIcon, SparklesIcon } from 'lucide-react';
+import { FileTextIcon, InfoIcon, SparklesIcon } from 'lucide-react';
 import { Link, useRevalidator, useSearchParams } from 'react-router';
 import { isDeepEqual } from 'remeda';
 import { match } from 'ts-pattern';
@@ -28,11 +28,20 @@ import {
   type TTextFieldMeta,
 } from '@documenso/lib/types/field-meta';
 import { canRecipientFieldsBeModified } from '@documenso/lib/utils/recipients';
+import { trpc } from '@documenso/trpc/react';
 import { AnimateGenericFadeInOut } from '@documenso/ui/components/animate/animate-generic-fade-in-out';
 import PDFViewerKonvaLazy from '@documenso/ui/components/pdf-viewer/pdf-viewer-konva-lazy';
 import { Alert, AlertDescription, AlertTitle } from '@documenso/ui/primitives/alert';
 import { Button } from '@documenso/ui/primitives/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@documenso/ui/primitives/select';
 import { Separator } from '@documenso/ui/primitives/separator';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@documenso/ui/primitives/tooltip';
 
 import { AiFeaturesEnableDialog } from '~/components/dialogs/ai-features-enable-dialog';
 import { AiFieldDetectionDialog } from '~/components/dialogs/ai-field-detection-dialog';
@@ -75,7 +84,12 @@ export const EnvelopeEditorFieldsPage = () => {
 
   const team = useCurrentTeam();
 
-  const { envelope, editorFields, relativePath } = useCurrentEnvelopeEditor();
+  const { envelope, editorFields, relativePath, updateEnvelopeAsync } = useCurrentEnvelopeEditor();
+
+  const { data: certificates = [] } = trpc.certificate.list.useQuery(
+    { teamId: team.id },
+    { enabled: team.id !== -1 },
+  );
 
   const { currentEnvelopeItem } = useCurrentEnvelopeRender();
 
@@ -265,6 +279,55 @@ export const EnvelopeEditorFieldsPage = () => {
               <SparklesIcon className="-ml-1 mr-2 h-4 w-4" />
               <Trans>Detect with AI</Trans>
             </Button>
+
+            {certificates.length > 0 && (
+              <div className="mt-4 space-y-2">
+                <div className="flex flex-row items-center">
+                  <label className="text-xs font-medium text-foreground">
+                    <Trans>Signing Certificate</Trans>
+                  </label>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <InfoIcon className="mx-2 h-3 w-3" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs text-muted-foreground">
+                      <Trans>
+                        Select the certificate to use for signing this document. If not selected,
+                        the default certificate will be used.
+                      </Trans>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <Select
+                  value={envelope.documentMeta?.certificateId || undefined}
+                  onValueChange={async (value) => {
+                    await updateEnvelopeAsync({
+                      meta: {
+                        certificateId: value || null,
+                      },
+                    });
+                  }}
+                >
+                  <SelectTrigger className="w-full bg-background text-sm">
+                    <SelectValue placeholder={_(msg`Use default certificate`)} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {certificates.map((cert: { id: string; name: string; isDefault: boolean }) => (
+                      <SelectItem key={cert.id} value={cert.id}>
+                        <span>
+                          {cert.name}
+                          {cert.isDefault && (
+                            <span className="ml-2 text-xs text-muted-foreground">
+                              (<Trans>Default</Trans>)
+                            </span>
+                          )}
+                        </span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             <AiFieldDetectionDialog
               open={isAiFieldDialogOpen}

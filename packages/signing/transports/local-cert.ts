@@ -44,9 +44,19 @@ export const signWithLocalCert = async ({
   // Try to load certificate from database if certificateId is provided
   if (certificateId && teamId) {
     try {
+      console.log('[CERT DEBUG] Loading certificate from database:', {
+        certificateId,
+        teamId,
+      });
       const certData = await getCertificateData({ certificateId, teamId });
       cert = certData.data;
       passphrase = certData.passphrase;
+      console.log('[CERT DEBUG] Certificate loaded successfully:', {
+        certSize: cert?.length,
+        hasPassphrase: !!passphrase,
+        passphraseLength: passphrase?.length,
+        passphraseType: typeof passphrase,
+      });
     } catch (error) {
       console.error('Certificate error: Failed to load certificate from database', error);
       // Fall through to try other methods
@@ -111,6 +121,17 @@ export const signWithLocalCert = async ({
       throw new Error('Document signing failed: Certificate file not accessible');
     }
   }
+
+  console.log('[CERT DEBUG] About to call signWithP12:', {
+    hasCert: !!cert,
+    certSize: cert?.length,
+    hasPassword: !!passphrase,
+    passwordLength: passphrase?.length,
+    passwordType: typeof passphrase,
+    passwordIsEmpty: passphrase === '',
+    passwordIsUndefined: passphrase === undefined,
+    pdfSize: pdfWithoutSignature.length,
+  });
 
   const signature = signWithP12({
     cert,

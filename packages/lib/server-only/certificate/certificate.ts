@@ -41,7 +41,7 @@ export const uploadCertificate = async ({
   }
 
   const encryptedData = encryptData(data);
-  const encryptedPassphrase = encryptString(passphrase);
+  const encryptedPassphrase = encryptString(passphrase.trim());
 
   return await prisma.certificate.create({
     data: {
@@ -108,9 +108,29 @@ export const getCertificateData = async ({ certificateId, teamId }: GetCertifica
     });
   }
 
+  console.log('[CERT DEBUG] getCertificateData - Raw data from DB:', {
+    certificateId,
+    teamId,
+    dataType: typeof certificate.data,
+    dataLength: certificate.data?.length,
+    passphraseType: typeof certificate.passphrase,
+    passphraseLength: certificate.passphrase?.length,
+    passphrasePreview: certificate.passphrase?.substring(0, 20) + '...',
+  });
+
+  const decryptedData = decryptData(Buffer.from(certificate.data));
+  const decryptedPassphrase = decryptData(Buffer.from(certificate.passphrase, 'base64'));
+
+  console.log('[CERT DEBUG] getCertificateData - After decryption:', {
+    decryptedDataLength: decryptedData.length,
+    decryptedPassphraseLength: decryptedPassphrase.length,
+    decryptedPassphraseType: typeof decryptedPassphrase.toString('utf-8'),
+    passphrasePreview: decryptedPassphrase.toString('utf-8').substring(0, 5) + '***',
+  });
+
   return {
-    data: decryptData(certificate.data),
-    passphrase: decryptString(certificate.passphrase),
+    data: Buffer.from(decryptedData),
+    passphrase: decryptedPassphrase.toString('utf-8').trim(),
   };
 };
 

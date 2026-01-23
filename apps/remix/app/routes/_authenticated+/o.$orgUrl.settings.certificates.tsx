@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 import { Trans, msg } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import { useParams } from '@remix-run/react';
 import { Loader, Trash, Upload } from 'lucide-react';
+import { useParams } from 'react-router';
 
+import { trpc } from '@documenso/trpc/react';
 import { Button } from '@documenso/ui/primitives/button';
 import {
   Dialog,
@@ -21,7 +22,6 @@ import { Label } from '@documenso/ui/primitives/label';
 import { useToast } from '@documenso/ui/primitives/use-toast';
 
 import { SettingsHeader } from '~/components/general/settings-header';
-import { trpc } from '~/lib/trpc/client';
 
 export default function OrganisationSettingsCertificatesPage() {
   const params = useParams();
@@ -37,9 +37,18 @@ export default function OrganisationSettingsCertificatesPage() {
 
   const utils = trpc.useUtils();
 
-  const { data: certificates, isLoading } = trpc.certificate.list.useQuery();
+  // Get organisation session to extract teamId
+  const { data: orgSession } = trpc.organisation.internal.getOrganisationSession.useQuery();
 
-  const { mutateAsync: uploadCertificate, isLoading: isUploading } =
+  const currentOrg = orgSession?.find((org) => org.url === params.orgUrl);
+  const teamId = currentOrg?.teams?.[0]?.id;
+
+  const { data: certificates, isLoading } = trpc.certificate.list.useQuery(
+    { teamId },
+    { enabled: !!teamId },
+  );
+
+  const { mutateAsync: uploadCertificate, isPending: isUploading } =
     trpc.certificate.upload.useMutation();
 
   const { mutateAsync: deleteCertificate } = trpc.certificate.delete.useMutation();
@@ -67,9 +76,21 @@ export default function OrganisationSettingsCertificatesPage() {
 
     try {
       const arrayBuffer = await certificateFile.arrayBuffer();
-      const base64Data = Buffer.from(arrayBuffer).toString('base64');
+      // Convert ArrayBuffer to base64 using browser-compatible method
+      const uint8Array = new Uint8Array(arrayBuffer);
+      let binaryString = '';
+      for (let i = 0; i < uint8Array.length; i++) {
+        binaryString += String.fromCharCode(uint8Array[i]);
+      }
+      const base64Data = btoa(binaryString);
+
+      if (!teamId) {
+        setUploadError('Team not found');
+        return;
+      }
 
       await uploadCertificate({
+        teamId,
         name: certificateName,
         data: base64Data,
         passphrase: certificatePassphrase,
@@ -79,7 +100,6 @@ export default function OrganisationSettingsCertificatesPage() {
       toast({
         title: _(msg`Success`),
         description: _(msg`Certificate uploaded successfully`),
-        variant: 'success',
       });
 
       // Reset form
@@ -105,13 +125,16 @@ export default function OrganisationSettingsCertificatesPage() {
       return;
     }
 
+    if (!teamId) {
+      return;
+    }
+
     try {
-      await deleteCertificate({ certificateId });
+      await deleteCertificate({ teamId, certificateId });
 
       toast({
         title: _(msg`Success`),
         description: _(msg`Certificate deleted successfully`),
-        variant: 'success',
       });
 
       await utils.certificate.list.invalidate();
@@ -125,13 +148,16 @@ export default function OrganisationSettingsCertificatesPage() {
   };
 
   const handleSetDefault = async (certificateId: string) => {
+    if (!teamId) {
+      return;
+    }
+
     try {
-      await setDefaultCertificate({ certificateId });
+      await setDefaultCertificate({ teamId, certificateId });
 
       toast({
         title: _(msg`Success`),
         description: _(msg`Default certificate updated`),
-        variant: 'success',
       });
 
       await utils.certificate.list.invalidate();
@@ -221,7 +247,7 @@ export default function OrganisationSettingsCertificatesPage() {
                 </Label>
               </div>
 
-              {uploadError && <FormErrorMessage>{uploadError}</FormErrorMessage>}
+              {uploadError && <FormErrorMessage error={{ message: uploadError }} />}
             </div>
 
             <DialogFooter>
@@ -244,45 +270,47 @@ export default function OrganisationSettingsCertificatesPage() {
           </div>
         ) : certificates && certificates.length > 0 ? (
           <div className="space-y-4">
-            {certificates.map((cert) => (
-              <div
-                key={cert.id}
-                className="flex items-center justify-between rounded-lg border border-border p-4"
-              >
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium">{cert.name}</h3>
-                    {cert.isDefault && (
-                      <span className="rounded bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
-                        <Trans>Default</Trans>
-                      </span>
-                    )}
+            {certificates.map(
+              (cert: { id: string; name: string; isDefault: boolean; createdAt: Date }) => (
+                <div
+                  key={cert.id}
+                  className="flex items-center justify-between rounded-lg border border-border p-4"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-medium">{cert.name}</h3>
+                      {cert.isDefault && (
+                        <span className="rounded bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                          <Trans>Default</Trans>
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      <Trans>Uploaded {new Date(cert.createdAt).toLocaleDateString()}</Trans>
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    <Trans>Uploaded {new Date(cert.createdAt).toLocaleDateString()}</Trans>
-                  </p>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  {!cert.isDefault && (
+                  <div className="flex items-center gap-2">
+                    {!cert.isDefault && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={async () => handleSetDefault(cert.id)}
+                      >
+                        <Trans>Set as Default</Trans>
+                      </Button>
+                    )}
                     <Button
-                      variant="outline"
+                      variant="destructive"
                       size="sm"
-                      onClick={async () => handleSetDefault(cert.id)}
+                      onClick={async () => handleDelete(cert.id)}
                     >
-                      <Trans>Set as Default</Trans>
+                      <Trash className="h-4 w-4" />
                     </Button>
-                  )}
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={async () => handleDelete(cert.id)}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">

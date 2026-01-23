@@ -10,19 +10,28 @@ import {
 import { authenticatedProcedure, router } from '../trpc';
 
 export const certificateRouter = router({
-  list: authenticatedProcedure.query(async ({ ctx }) => {
-    const { teamId } = ctx;
+  list: authenticatedProcedure
+    .input(
+      z
+        .object({
+          teamId: z.number().optional(),
+        })
+        .optional(),
+    )
+    .query(async ({ input, ctx }) => {
+      const teamId = input?.teamId ?? ctx.teamId;
 
-    if (!teamId) {
-      throw new Error('Team ID is required');
-    }
+      if (!teamId || teamId === -1) {
+        return [];
+      }
 
-    return await getCertificates({ teamId });
-  }),
+      return await getCertificates({ teamId });
+    }),
 
   upload: authenticatedProcedure
     .input(
       z.object({
+        teamId: z.number().optional(),
         name: z.string().min(1).max(255),
         data: z.string(), // Base64 encoded certificate file
         passphrase: z.string(),
@@ -30,9 +39,9 @@ export const certificateRouter = router({
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const { teamId } = ctx;
+      const teamId = input.teamId ?? ctx.teamId;
 
-      if (!teamId) {
+      if (!teamId || teamId === -1) {
         throw new Error('Team ID is required');
       }
 
@@ -45,7 +54,7 @@ export const certificateRouter = router({
         teamId,
         name,
         data: dataBuffer,
-        passphrase,
+        passphrase: passphrase.trim(),
         isDefault,
       });
     }),
@@ -53,13 +62,14 @@ export const certificateRouter = router({
   delete: authenticatedProcedure
     .input(
       z.object({
+        teamId: z.number().optional(),
         certificateId: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const { teamId } = ctx;
+      const teamId = input.teamId ?? ctx.teamId;
 
-      if (!teamId) {
+      if (!teamId || teamId === -1) {
         throw new Error('Team ID is required');
       }
 
@@ -72,11 +82,12 @@ export const certificateRouter = router({
   setDefault: authenticatedProcedure
     .input(
       z.object({
+        teamId: z.number().optional(),
         certificateId: z.string(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
-      const { teamId } = ctx;
+      const teamId = input.teamId ?? ctx.teamId;
 
       if (!teamId) {
         throw new Error('Team ID is required');
