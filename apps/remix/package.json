@@ -48,6 +48,7 @@
     "hono": "4.11.4",
     "hono-rate-limiter": "^0.4.2",
     "hono-react-router-adapter": "^0.6.5",
+    "swagger-ui-react": "^5.18.2",
     "input-otp": "^1.4.2",
     "isbot": "^5.1.32",
     "konva": "^10.0.9",
