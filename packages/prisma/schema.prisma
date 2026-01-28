@@ -73,6 +73,7 @@ model User {
   siteSettings       SiteSettings[]
   passkeys           Passkey[]
   avatarImage        AvatarImage?           @relation(fields: [avatarImageId], references: [id], onDelete: SetNull)
+  userCertificates   UserCertificate[]
 
   @@index([email])
 }
@@ -402,6 +403,7 @@ model Envelope {
   fields        Field[]
   shareLinks    DocumentShareLink[]
   auditLogs     DocumentAuditLog[]
+  digitalSignatures DigitalSignature[]
 
   // Envelope settings
   authOptions Json? /// [DocumentAuthOptions] @zod.custom.use(ZDocumentAuthOptionsSchema)
@@ -512,10 +514,67 @@ model Certificate {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
-  documentMetas DocumentMeta[]
+  documentMetas     DocumentMeta[]
+  digitalSignatures DigitalSignature[]
 
   @@index([teamId])
   @@index([isDefault])
+}
+
+/// User-level digital certificates provisioned from OpenXPKI
+model UserCertificate {
+  id              String    @id @default(cuid())
+  userId          Int
+  certificateData Bytes /// Encrypted P12 certificate file
+  passphrase      String /// Encrypted passphrase
+  serialNumber    String /// Certificate serial number from OpenXPKI
+  commonName      String /// Certificate CN
+  issuedAt        DateTime
+  expiresAt       DateTime
+  revokedAt       DateTime?
+  status          UserCertificateStatus @default(ACTIVE)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  digitalSignatures DigitalSignature[]
+
+  @@index([userId])
+  @@index([serialNumber])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+enum UserCertificateStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+  PENDING
+}
+
+/// Tracks digital signatures applied to PDF documents
+/// Each entry represents one cryptographic signature on a PDF
+model DigitalSignature {
+  id                String   @id @default(cuid())
+  envelopeId        String
+  recipientId       Int? /// null for system signature
+  fieldId           Int? /// which signature field this correlates to
+  userCertificateId String? /// for user signatures
+  teamCertificateId String? /// for team/system signatures
+  signedAt          DateTime @default(now())
+  signatureData     Json? /// metadata from PDF signature (location, reason, etc.)
+  signatureIndex    Int /// order of signature application (1st, 2nd, 3rd...)
+
+  envelope        Envelope         @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
+  recipient       Recipient?       @relation(fields: [recipientId], references: [id], onDelete: SetNull)
+  field           Field?           @relation(fields: [fieldId], references: [id], onDelete: SetNull)
+  userCertificate UserCertificate? @relation(fields: [userCertificateId], references: [id], onDelete: SetNull)
+  teamCertificate Certificate?     @relation(fields: [teamCertificateId], references: [id], onDelete: SetNull)
+
+  @@index([envelopeId])
+  @@index([recipientId])
+  @@index([fieldId])
+  @@index([signedAt])
 }
 
 /// @zod.import(["import { ZDocumentEmailSettingsSchema } from '@documenso/lib/types/document-email';"])
@@ -607,9 +666,10 @@ model Recipient {
   readStatus        ReadStatus    @default(NOT_OPENED)
   signingStatus     SigningStatus @default(NOT_SIGNED)
   sendStatus        SendStatus    @default(NOT_SENT)
-  envelope          Envelope      @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
+  envelope          Envelope           @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
   fields            Field[]
   signatures        Signature[]
+  digitalSignatures DigitalSignature[]
 
   @@index([token])
   @@index([email])
@@ -647,10 +707,11 @@ model Field {
   customText     String
   inserted       Boolean
   envelopeItem   EnvelopeItem @relation(fields: [envelopeItemId], references: [id], onDelete: Cascade)
-  envelope       Envelope     @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
-  recipient      Recipient    @relation(fields: [recipientId], references: [id], onDelete: Cascade)
-  signature      Signature?
-  fieldMeta      Json? /// [FieldMeta] @zod.custom.use(ZFieldMetaNotOptionalSchema)
+  envelope          Envelope          @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
+  recipient         Recipient         @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  signature         Signature?
+  digitalSignatures DigitalSignature[]
+  fieldMeta         Json? /// [FieldMeta] @zod.custom.use(ZFieldMetaNotOptionalSchema)
 
   @@index([envelopeId])
   @@index([envelopeItemId])

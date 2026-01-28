@@ -7,6 +7,7 @@ import {
   Globe2Icon,
   Lock,
   Settings2Icon,
+  ShieldCheck,
   User,
   Users,
   WebhookIcon,
@@ -172,6 +173,19 @@ export const SettingsDesktopNav = ({ className, ...props }: SettingsDesktopNavPr
         >
           <Lock className="mr-2 h-5 w-5" />
           <Trans>Security</Trans>
+        </Button>
+      </Link>
+
+      <Link to="/settings/certificates">
+        <Button
+          variant="ghost"
+          className={cn(
+            'w-full justify-start',
+            pathname?.startsWith('/settings/certificates') && 'bg-secondary',
+          )}
+        >
+          <ShieldCheck className="mr-2 h-5 w-5" />
+          <Trans>Digital Certificates</Trans>
         </Button>
       </Link>
     </div>
