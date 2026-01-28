@@ -1,3 +1,4 @@
+export NODE_OPTIONS="--max-old-space-size=16344"
 SCRIPT_DIR="$(readlink -f "$(dirname "$0")")"
 MONOREPO_ROOT="$(readlink -f "$SCRIPT_DIR/../")"
 

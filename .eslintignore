@@ -6,3 +6,9 @@
 apps/*/public/*.js
 apps/*/public/*.cjs
 scripts/
+
+dist/
+build/
+*.min.js
+package-lock.json
+public/assets/

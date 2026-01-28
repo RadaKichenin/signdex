@@ -25,6 +25,7 @@ import { generateAuditLogPdf } from '@documenso/lib/server-only/pdf/generate-aud
 import { generateCertificatePdf } from '@documenso/lib/server-only/pdf/generate-certificate-pdf';
 import { prisma } from '@documenso/prisma';
 import { signPdf } from '@documenso/signing';
+import { signPdfIncrementally } from '@documenso/signing/strategies/incremental-signing';
 
 import { NEXT_PRIVATE_USE_PLAYWRIGHT_PDF } from '../../../constants/app';
 import { PDF_SIZE_A4_72PPI } from '../../../constants/pdf';
@@ -56,6 +57,13 @@ import { createDocumentAuditLogData } from '../../../utils/document-audit-logs';
 import { mapDocumentIdToSecondaryId } from '../../../utils/envelope';
 import type { JobRunIO } from '../../client/_internal/job';
 import type { TSealDocumentJobDefinition } from './seal-document';
+
+/**
+ * Type guard to check if a value is a record object
+ */
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
 
 export const run = async ({
   payload,
@@ -497,13 +505,249 @@ const decorateAndSignPdf = async ({
   const pdfBytes = await pdfDoc.save();
 
   // Convert to @libpdf/core PDF object for signing
-  const pdfForSigning = await PDF.load(pdfBytes);
+  let pdfForSigning = await PDF.load(pdfBytes);
 
-  const pdfBuffer = await signPdf({
-    pdf: pdfForSigning,
-    certificateId: envelope.documentMeta?.certificateId,
-    teamId: envelope.teamId,
+  // Re-apply user digital signatures that were lost during PDF reconstruction
+  // Query all digital signatures for this envelope
+  const existingSignatures = await prisma.digitalSignature.findMany({
+    where: {
+      envelopeId: envelope.id,
+    },
+    include: {
+      userCertificate: true,
+      recipient: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      signedAt: 'asc',
+    },
   });
+
+  console.log('[SealDocument] Re-applying user signatures after PDF reconstruction:', {
+    signatureCount: existingSignatures.length,
+  });
+
+  // Re-apply each user signature incrementally
+  for (const signature of existingSignatures) {
+    try {
+      if (!signature.userCertificate) {
+        console.error(
+          '[SealDocument] User certificate relation not loaded for signature:',
+          signature.id,
+        );
+        continue;
+      }
+
+      const { getActiveUserCertificate } = await import('../../../server-only/user-certificate');
+
+      const userCertificate = await getActiveUserCertificate({
+        userId: signature.userCertificate.userId,
+        includeData: true,
+      });
+
+      if (!userCertificate) {
+        console.error('[SealDocument] User certificate not found for signature:', signature.id);
+        continue;
+      }
+
+      const recipientName = signature.recipient?.name || signature.recipient?.email || 'Unknown';
+
+      // Extract signature metadata from JSON field
+      const rawMetadata = signature.signatureData;
+      const signatureMetadata = isRecord(rawMetadata) ? rawMetadata : {};
+      const metadataReason =
+        typeof signatureMetadata.reason === 'string' ? signatureMetadata.reason : undefined;
+      const metadataLocation =
+        typeof signatureMetadata.location === 'string' ? signatureMetadata.location : undefined;
+      const metadataContactInfo =
+        typeof signatureMetadata.contactInfo === 'string'
+          ? signatureMetadata.contactInfo
+          : undefined;
+
+      // Re-apply user signature incrementally with unique field name
+      const signedBytesResult = await signPdfIncrementally({
+        pdf: pdfForSigning,
+        certificateData: Buffer.from(userCertificate.certificateData!),
+        passphrase: userCertificate.passphrase!,
+        certificateName: userCertificate.commonName || 'User Certificate',
+        reason: metadataReason || `Signed by ${recipientName}`,
+        location: metadataLocation,
+        contactInfo: metadataContactInfo,
+        signatureIndex: signature.signatureIndex, // Unique field name
+      });
+
+      const signedBytes = Buffer.isBuffer(signedBytesResult)
+        ? signedBytesResult
+        : Buffer.from(signedBytesResult);
+
+      // Reload PDF with the newly added signature for next iteration
+      pdfForSigning = await PDF.load(Buffer.from(signedBytes));
+
+      console.log('[SealDocument] Re-applied user signature:', {
+        signatureId: signature.id,
+        signatureIndex: signature.signatureIndex,
+        signer: recipientName,
+      });
+    } catch (error) {
+      console.error('[SealDocument] Failed to re-apply user signature:', {
+        signatureId: signature.id,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+      // Continue with other signatures even if one fails
+    }
+  }
+
+  // Use incremental signing to add system seal after user signatures
+  let pdfBuffer: Buffer;
+
+  try {
+    // Try to load system seal certificate for incremental signing
+    const certificateModule = await import('../../../server-only/certificate/certificate');
+    const envModule = await import('../../../utils/env');
+    const getCertificateData = certificateModule.getCertificateData;
+    const envFn = envModule.env;
+
+    let cert: Buffer | null = null;
+    let passphrase: string | undefined;
+    let certificateName = 'System Seal';
+
+    // Try to load certificate from database if certificateId is provided
+    if (envelope.documentMeta?.certificateId && envelope.teamId) {
+      try {
+        const certificate = await prisma.certificate.findFirst({
+          where: {
+            id: envelope.documentMeta.certificateId,
+            teamId: envelope.teamId,
+          },
+        });
+
+        if (certificate) {
+          certificateName = certificate.name;
+          const certData = await getCertificateData({
+            certificateId: envelope.documentMeta.certificateId,
+            teamId: envelope.teamId,
+          });
+          cert = certData.data;
+          passphrase = certData.passphrase;
+        }
+      } catch (error) {
+        console.error('[SealDocument] Failed to load certificate from database:', error);
+      }
+    }
+
+    // If no certificate from database, try to load default certificate for the team
+    if (!cert && envelope.teamId) {
+      try {
+        const defaultCert = await prisma.certificate.findFirst({
+          where: {
+            teamId: envelope.teamId,
+            isDefault: true,
+          },
+        });
+
+        if (defaultCert) {
+          certificateName = defaultCert.name;
+          const certData = await getCertificateData({
+            certificateId: defaultCert.id,
+            teamId: envelope.teamId,
+          });
+          cert = certData.data;
+          passphrase = certData.passphrase;
+        }
+      } catch (error) {
+        console.error('[SealDocument] Failed to load default certificate:', error);
+      }
+    }
+
+    // Fall back to environment variable certificate
+    if (!cert) {
+      const localFileContents = envFn('NEXT_PRIVATE_SIGNING_LOCAL_FILE_CONTENTS');
+      const localFilePath = envFn('NEXT_PRIVATE_SIGNING_LOCAL_FILE_PATH');
+
+      if (localFileContents) {
+        cert = Buffer.from(localFileContents, 'base64');
+        passphrase = envFn('NEXT_PRIVATE_SIGNING_PASSPHRASE') || '';
+        certificateName = 'Environment Certificate';
+        console.log(
+          '[SealDocument] Using environment certificate (base64) for incremental signing',
+        );
+      } else if (localFilePath) {
+        // Load from file path
+        const fs = await import('node:fs');
+        cert = fs.readFileSync(localFilePath);
+        passphrase = envFn('NEXT_PRIVATE_SIGNING_PASSPHRASE') || '';
+        certificateName = 'Local File Certificate';
+        console.log(
+          '[SealDocument] Using environment certificate (file path) for incremental signing',
+        );
+      }
+    }
+
+    if (!cert) {
+      throw new Error('No certificate available for signing');
+    }
+
+    // Passphrase can be empty string for some certificates
+    if (passphrase === undefined || passphrase === null) {
+      passphrase = '';
+    }
+
+    console.log('[SealDocument] Certificate loaded for incremental signing:', {
+      certificateName,
+      certSize: cert.length,
+      hasPassphrase: passphrase.length > 0,
+    });
+
+    // Calculate system seal signature index
+    const systemSealIndex = existingSignatures.length + 1;
+
+    // Sign incrementally to add system seal after user signatures
+    pdfBuffer = await signPdfIncrementally({
+      pdf: pdfForSigning,
+      certificateData: cert,
+      passphrase,
+      certificateName,
+      reason: 'Document Sealed',
+      location: NEXT_PRIVATE_USE_PLAYWRIGHT_PDF() ? 'System' : 'Documenso',
+      signatureIndex: systemSealIndex, // Unique field name for system seal
+    });
+
+    console.log('[SealDocument] System seal applied with incremental signing');
+
+    // Record system seal as a digital signature
+    await prisma.digitalSignature.create({
+      data: {
+        envelopeId: envelope.id,
+        signatureIndex: systemSealIndex,
+        signatureData: {
+          reason: 'Document Sealed',
+          location: NEXT_PRIVATE_USE_PLAYWRIGHT_PDF() ? 'System' : 'Documenso',
+          signer: certificateName,
+        },
+      },
+    });
+
+    console.log('[SealDocument] Recorded system seal signature:', {
+      signatureIndex: systemSealIndex,
+      certificateName,
+    });
+  } catch (error) {
+    console.error(
+      '[SealDocument] Incremental signing failed, falling back to regular signing:',
+      error,
+    );
+
+    // Fall back to regular signing if incremental signing fails
+    pdfBuffer = await signPdf({
+      pdf: pdfForSigning,
+      certificateId: envelope.documentMeta?.certificateId,
+      teamId: envelope.teamId,
+    });
+  }
 
   const { name } = path.parse(envelopeItem.title);
 
@@ -514,6 +758,18 @@ const decorateAndSignPdf = async ({
     name: `${name}${suffix}`,
     type: 'application/pdf',
     arrayBuffer: async () => Promise.resolve(pdfBuffer),
+  });
+
+  // Update envelope item to point to the sealed PDF
+  await prisma.envelopeItem.updateMany({
+    where: { envelopeId: envelope.id },
+    data: { documentDataId: newDocumentData.id },
+  });
+
+  console.log('[SealDocument] Updated envelope item with sealed PDF:', {
+    envelopeId: envelope.id,
+    oldDocumentDataId: envelopeItem.documentData.id,
+    newDocumentDataId: newDocumentData.id,
   });
 
   return {

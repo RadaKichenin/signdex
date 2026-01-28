@@ -917,6 +917,10 @@ msgstr "Een unieke URL om je team te identificeren"
 msgid "A verification email will be sent to the provided email."
 msgstr "Er wordt een verificatie-e-mail naar het opgegeven e-mailadres verzonden."
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "About Digital Certificates"
+msgstr ""
+
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: packages/email/templates/confirm-team-email.tsx
 #: packages/email/templates/organisation-invite.tsx
@@ -1036,6 +1040,7 @@ msgstr "Actie"
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.email-domains.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.email-domains.$id.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "Actions"
 msgstr "Acties"
@@ -1050,6 +1055,10 @@ msgstr "Actief"
 msgctxt "Subscription status"
 msgid "Active"
 msgstr "Actief"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Active Certificate"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
@@ -2304,8 +2313,20 @@ msgstr ""
 msgid "Certificate File (.p12)"
 msgstr ""
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificate History"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "Certificate Name"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificate provisioned successfully"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificate revoked successfully"
 msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
@@ -2314,6 +2335,10 @@ msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
 msgid "Certificates"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificates are automatically provisioned from our OpenXPKI server when you sign your first document. Each certificate is valid for 1 year."
 msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page-renderer.tsx
@@ -2475,6 +2500,10 @@ msgstr "Clientgeheim is verplicht"
 #: packages/ui/primitives/sheet.tsx
 msgid "Close"
 msgstr "Sluiten"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Common Name"
+msgstr ""
 
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 msgid "Communication"
@@ -3395,6 +3424,16 @@ msgstr "Apparaat"
 #: packages/email/templates/reset-password.tsx
 msgid "Didn't request a password change? We are here to help you secure your account, just <0>contact us</0>."
 msgstr "Geen wachtwoordwijziging aangevraagd? We helpen je graag je account te beveiligen, neem gewoon <0>contact met ons op</0>."
+
+#: apps/remix/app/components/general/settings-nav-desktop.tsx
+#: apps/remix/app/components/general/settings-nav-mobile.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Digital Certificates"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Digital certificates are used to cryptographically sign documents, providing non-repudiation and ensuring the authenticity of your signatures."
+msgstr ""
 
 #: apps/remix/app/components/general/template/template-direct-link-badge.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
@@ -4582,6 +4621,8 @@ msgstr "Envelope bijgewerkt"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.linked-accounts.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
@@ -4641,6 +4682,10 @@ msgstr "Time‑out overschreden"
 msgid "Expired"
 msgstr "Verlopen"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Expires"
+msgstr ""
+
 #. placeholder {0}: DateTime.fromMillis(Math.max(millisecondsRemaining, 0)).toFormat( 'mm:ss', )
 #: apps/remix/app/components/general/document-signing/access-auth-2fa-form.tsx
 msgid "Expires in {0}"
@@ -4650,6 +4695,10 @@ msgstr "Verloopt over {0}"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "Expires on {0}"
 msgstr "Verloopt op {0}"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Expires:"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-settings-dialog.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
@@ -4702,9 +4751,17 @@ msgstr "Document laden mislukt"
 msgid "Failed to move folder"
 msgstr "Map verplaatsen mislukt"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Failed to provision certificate"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 msgid "Failed to reseal document"
 msgstr "Opnieuw verzegelen van document mislukt"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Failed to revoke certificate"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Failed to revoke session"
@@ -5427,6 +5484,10 @@ msgstr "Factuur"
 msgid "IP Address"
 msgstr "IP‑adres"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Issued"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 msgid "Issuer URL"
 msgstr "Issuer-URL"
@@ -5819,6 +5880,10 @@ msgstr "Beheer de teams in deze organisatie."
 msgid "Manage users"
 msgstr "Gebruikers beheren"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Manage your digital certificates for signing documents"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.email-domains.$id.tsx
 msgid "Manage your email domain settings."
 msgstr "Beheer je e-maildomeininstellingen."
@@ -6111,6 +6176,10 @@ msgstr "Nee"
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "No active drafts"
 msgstr "Geen actieve concepten"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "No Certificates"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "No certificates uploaded"
@@ -7044,6 +7113,10 @@ msgstr "Provider"
 msgid "Provider has been updated successfully"
 msgstr "Provider is succesvol bijgewerkt"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Provisioning..."
+msgstr ""
+
 #: apps/remix/app/components/general/template/template-type.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Public"
@@ -7395,6 +7468,10 @@ msgstr "Antwoord op e-mail <0>(optioneel)</0>"
 msgid "Request"
 msgstr "Verzoek"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Request New Certificate"
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/organisation.sso.confirmation.$token.tsx
 msgid "Requesting Organisation"
 msgstr "Aanvragende organisatie"
@@ -7573,6 +7650,7 @@ msgid "Review request"
 msgstr "Verzoek beoordelen"
 
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Revoke"
 msgstr "Intrekken"
@@ -7993,6 +8071,14 @@ msgstr "Verzenden..."
 #: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Sent"
 msgstr "Verzonden"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Serial Number"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Serial Number:"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Session revoked"
@@ -8481,6 +8567,7 @@ msgstr "Statistieken"
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 #: apps/remix/app/components/tables/organisation-insights-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
@@ -8621,6 +8708,8 @@ msgstr "Abonnementsstatus"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/template.edit.$id.tsx
@@ -10472,6 +10561,10 @@ msgstr "Bekijk alle gerelateerde documenten"
 msgid "View all security activity related to your account."
 msgstr "Bekijk alle beveiligingsactiviteiten met betrekking tot je account."
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "View all your digital certificates, including active, expired, and revoked ones"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "View and manage all active sessions for your account."
@@ -11072,6 +11165,10 @@ msgstr "Wanneer je op Doorgaan klikt, wordt je gevraagd de eerste beschikbare au
 msgid "When you sign a document, we can automatically fill in and sign the following fields using information that has already been provided. You can also manually sign or remove any automatically signed fields afterwards if you desire."
 msgstr "Wanneer je een document ondertekent, kunnen we de volgende velden automatisch invullen en ondertekenen met informatie die al is opgegeven. Je kunt automatisch ondertekende velden achteraf ook handmatig ondertekenen of verwijderen als je dat wilt."
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "When you sign a document, your digital certificate is automatically applied in addition to your visual signature, making it legally binding and tamper-evident."
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 msgstr "Wanneer je ons platform gebruikt om je elektronische handtekening op documenten te plaatsen, doe je dat onder de Electronic Signatures in Global and National Commerce Act (E‑Sign Act) en andere toepasselijke wetgeving. Deze handeling geeft aan dat je ermee instemt documenten elektronisch te ondertekenen en meldingen elektronisch te ontvangen."
@@ -11373,6 +11470,10 @@ msgstr "Je hebt momenteel geen toegang tot teams binnen deze organisatie. Neem c
 msgid "You do not have permission to create a token for this team."
 msgstr "Je hebt geen toestemming om een token voor dit team te maken."
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "You don't have any digital certificates yet. Click \"Request New Certificate\" to get started."
+msgstr ""
+
 #: apps/remix/app/components/tables/user-billing-organisations-table.tsx
 msgid "You don't manage billing for any organisations."
 msgstr "U beheert de facturering voor geen enkele organisatie."
@@ -11390,6 +11491,10 @@ msgstr "Je hebt een uitnodiging van <0>{0}</0> geaccepteerd om lid te worden van
 #: apps/remix/app/routes/_unauthenticated+/team.verify.email.$token.tsx
 msgid "You have already verified your email address for <0>{0}</0>."
 msgstr "Je hebt je e‑mailadres voor <0>{0}</0> al geverifieerd."
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "You have an active digital certificate. All your signatures will be digitally signed with this certificate."
+msgstr ""
 
 #. placeholder {0}: data.organisationName
 #: apps/remix/app/routes/_unauthenticated+/organisation.invite.$token.tsx

@@ -291,6 +291,32 @@ export const completeDocumentWithToken = async ({
     },
   });
 
+  // Trigger digital signature with user certificate if OpenXPKI is enabled
+  // Find the first signature field for this recipient to link the digital signature
+  const signatureField = fields.find(
+    (field) =>
+      (field.type === FieldType.SIGNATURE || field.type === FieldType.FREE_SIGNATURE) &&
+      field.recipientId === recipient.id,
+  );
+
+  // Get the user ID from the recipient email if they have an account
+  const recipientUser = await prisma.user.findUnique({
+    where: { email: recipientEmail },
+    select: { id: true },
+  });
+
+  if (recipientUser) {
+    await jobs.triggerJob({
+      name: 'internal.sign-with-user-certificate',
+      payload: {
+        envelopeId: envelope.id,
+        recipientId: recipient.id,
+        userId: recipientUser.id,
+        fieldId: signatureField?.id,
+      },
+    });
+  }
+
   const pendingRecipients = await prisma.recipient.findMany({
     select: {
       id: true,

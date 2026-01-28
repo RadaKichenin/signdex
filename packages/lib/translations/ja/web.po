@@ -917,6 +917,10 @@ msgstr "チームを識別するための一意の URL"
 msgid "A verification email will be sent to the provided email."
 msgstr "入力されたメールアドレス宛てに確認メールが送信されます。"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "About Digital Certificates"
+msgstr ""
+
 #: apps/remix/app/components/general/organisations/organisation-invitations.tsx
 #: packages/email/templates/confirm-team-email.tsx
 #: packages/email/templates/organisation-invite.tsx
@@ -1036,6 +1040,7 @@ msgstr "操作"
 #: apps/remix/app/routes/_authenticated+/admin+/organisations.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.email-domains.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.email-domains.$id.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 msgid "Actions"
 msgstr "操作"
@@ -1050,6 +1055,10 @@ msgstr "有効"
 msgctxt "Subscription status"
 msgid "Active"
 msgstr "有効"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Active Certificate"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
@@ -2304,8 +2313,20 @@ msgstr ""
 msgid "Certificate File (.p12)"
 msgstr ""
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificate History"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "Certificate Name"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificate provisioned successfully"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificate revoked successfully"
 msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
@@ -2314,6 +2335,10 @@ msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings._layout.tsx
 msgid "Certificates"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Certificates are automatically provisioned from our OpenXPKI server when you sign your first document. Each certificate is valid for 1 year."
 msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-fields-page-renderer.tsx
@@ -2475,6 +2500,10 @@ msgstr "クライアントシークレットは必須です"
 #: packages/ui/primitives/sheet.tsx
 msgid "Close"
 msgstr "閉じる"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Common Name"
+msgstr ""
 
 #: apps/remix/app/components/embed/authoring/configure-document-advanced-settings.tsx
 msgid "Communication"
@@ -3395,6 +3424,16 @@ msgstr "デバイス"
 #: packages/email/templates/reset-password.tsx
 msgid "Didn't request a password change? We are here to help you secure your account, just <0>contact us</0>."
 msgstr "パスワード変更をリクエストしていませんか？アカウントの安全確保をお手伝いしますので、<0>こちらからお問い合わせください</0>。"
+
+#: apps/remix/app/components/general/settings-nav-desktop.tsx
+#: apps/remix/app/components/general/settings-nav-mobile.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Digital Certificates"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Digital certificates are used to cryptographically sign documents, providing non-repudiation and ensuring the authenticity of your signatures."
+msgstr ""
 
 #: apps/remix/app/components/general/template/template-direct-link-badge.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
@@ -4582,6 +4621,8 @@ msgstr "封筒を更新しました"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.linked-accounts.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
@@ -4641,6 +4682,10 @@ msgstr "タイムアウトを超えました"
 msgid "Expired"
 msgstr "有効期限切れ"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Expires"
+msgstr ""
+
 #. placeholder {0}: DateTime.fromMillis(Math.max(millisecondsRemaining, 0)).toFormat( 'mm:ss', )
 #: apps/remix/app/components/general/document-signing/access-auth-2fa-form.tsx
 msgid "Expires in {0}"
@@ -4650,6 +4695,10 @@ msgstr "有効期限: 残り {0}"
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.tokens.tsx
 msgid "Expires on {0}"
 msgstr "有効期限 {0}"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Expires:"
+msgstr ""
 
 #: apps/remix/app/components/general/envelope-editor/envelope-editor-settings-dialog.tsx
 #: packages/ui/primitives/document-flow/add-settings.tsx
@@ -4702,9 +4751,17 @@ msgstr "ドキュメントの読み込みに失敗しました"
 msgid "Failed to move folder"
 msgstr "フォルダの移動に失敗しました"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Failed to provision certificate"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/admin+/documents.$id.tsx
 msgid "Failed to reseal document"
 msgstr "文書の再封止に失敗しました"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Failed to revoke certificate"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Failed to revoke session"
@@ -5427,6 +5484,10 @@ msgstr "請求書"
 msgid "IP Address"
 msgstr "IP アドレス"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Issued"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
 msgid "Issuer URL"
 msgstr "Issuer URL"
@@ -5819,6 +5880,10 @@ msgstr "この組織内のチームを管理します。"
 msgid "Manage users"
 msgstr "ユーザー管理"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Manage your digital certificates for signing documents"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.email-domains.$id.tsx
 msgid "Manage your email domain settings."
 msgstr "メールドメインの設定を管理します。"
@@ -6111,6 +6176,10 @@ msgstr "いいえ"
 #: apps/remix/app/components/tables/documents-table-empty-state.tsx
 msgid "No active drafts"
 msgstr "有効な下書きはありません"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "No Certificates"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 msgid "No certificates uploaded"
@@ -7044,6 +7113,10 @@ msgstr "プロバイダー"
 msgid "Provider has been updated successfully"
 msgstr "プロバイダーを正常に更新しました"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Provisioning..."
+msgstr ""
+
 #: apps/remix/app/components/general/template/template-type.tsx
 #: apps/remix/app/components/tables/templates-table.tsx
 msgid "Public"
@@ -7395,6 +7468,10 @@ msgstr "返信先メールアドレス <0>（任意）</0>"
 msgid "Request"
 msgstr "リクエスト"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Request New Certificate"
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/organisation.sso.confirmation.$token.tsx
 msgid "Requesting Organisation"
 msgstr "要求元の組織"
@@ -7573,6 +7650,7 @@ msgid "Review request"
 msgstr "リクエストを確認"
 
 #: apps/remix/app/components/general/teams/team-email-usage.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Revoke"
 msgstr "取り消し"
@@ -7993,6 +8071,14 @@ msgstr "送信中..."
 #: packages/lib/server-only/pdf/render-certificate.ts
 msgid "Sent"
 msgstr "送信日時"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Serial Number"
+msgstr ""
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "Serial Number:"
+msgstr ""
 
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "Session revoked"
@@ -8481,6 +8567,7 @@ msgstr "統計"
 #: apps/remix/app/components/tables/organisation-email-domains-table.tsx
 #: apps/remix/app/components/tables/organisation-insights-table.tsx
 #: apps/remix/app/routes/_authenticated+/admin+/documents._index.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks._index.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
 #: apps/remix/app/routes/_internal+/[__htmltopdf]+/audit-log.tsx
@@ -8621,6 +8708,8 @@ msgstr "サブスクリプション状況"
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.groups.$id.tsx
 #: apps/remix/app/routes/_authenticated+/o.$orgUrl.settings.sso.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
 #: apps/remix/app/routes/_authenticated+/t.$teamUrl+/settings.webhooks.$id._index.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/document.edit.$id.tsx
 #: apps/remix/app/routes/embed+/v1+/authoring+/template.edit.$id.tsx
@@ -10472,6 +10561,10 @@ msgstr "関連する文書をすべて表示"
 msgid "View all security activity related to your account."
 msgstr "アカウントに関連するすべてのセキュリティアクティビティを表示します。"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "View all your digital certificates, including active, expired, and revoked ones"
+msgstr ""
+
 #: apps/remix/app/routes/_authenticated+/settings+/security._index.tsx
 #: apps/remix/app/routes/_authenticated+/settings+/security.sessions.tsx
 msgid "View and manage all active sessions for your account."
@@ -11072,6 +11165,10 @@ msgstr "続行をクリックすると、システム上で最初に利用可能
 msgid "When you sign a document, we can automatically fill in and sign the following fields using information that has already been provided. You can also manually sign or remove any automatically signed fields afterwards if you desire."
 msgstr "ドキュメントに署名する際、すでに提供されている情報を使用して、次のフィールドに自動的に入力および署名できます。必要であれば、後から自動署名されたフィールドに手動で署名したり、削除したりすることもできます。"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "When you sign a document, your digital certificate is automatically applied in addition to your visual signature, making it legally binding and tamper-evident."
+msgstr ""
+
 #: apps/remix/app/routes/_unauthenticated+/articles.signature-disclosure.tsx
 msgid "When you use our platform to affix your electronic signature to documents, you are consenting to do so under the Electronic Signatures in Global and National Commerce Act (E-Sign Act) and other applicable laws. This action indicates your agreement to use electronic means to sign documents and receive notifications."
 msgstr "当社プラットフォームで文書に電子署名を行うことにより、お客様は Electronic Signatures in Global and National Commerce Act（E-Sign 法）およびその他の適用法の下で電子署名を行うことに同意したものとみなされます。この行為は、文書への署名および通知の受領を電子的手段で行うことに同意したことを意味します。"
@@ -11373,6 +11470,10 @@ msgstr "現在、この組織内のいずれのチームにもアクセスでき
 msgid "You do not have permission to create a token for this team."
 msgstr "このチームのトークンを作成する権限がありません。"
 
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "You don't have any digital certificates yet. Click \"Request New Certificate\" to get started."
+msgstr ""
+
 #: apps/remix/app/components/tables/user-billing-organisations-table.tsx
 msgid "You don't manage billing for any organisations."
 msgstr "請求を管理している組織はありません。"
@@ -11390,6 +11491,10 @@ msgstr "<0>{0}</0> からの組織参加招待を承諾しました。"
 #: apps/remix/app/routes/_unauthenticated+/team.verify.email.$token.tsx
 msgid "You have already verified your email address for <0>{0}</0>."
 msgstr "すでに <0>{0}</0> のメールアドレスを確認しています。"
+
+#: apps/remix/app/routes/_authenticated+/settings.certificates.tsx
+msgid "You have an active digital certificate. All your signatures will be digitally signed with this certificate."
+msgstr ""
 
 #. placeholder {0}: data.organisationName
 #: apps/remix/app/routes/_unauthenticated+/organisation.invite.$token.tsx

@@ -12,6 +12,9 @@ import { BACKPORT_SUBSCRIPTION_CLAIM_JOB_DEFINITION } from './definitions/intern
 import { BULK_SEND_TEMPLATE_JOB_DEFINITION } from './definitions/internal/bulk-send-template';
 import { EXECUTE_WEBHOOK_JOB_DEFINITION } from './definitions/internal/execute-webhook';
 import { SEAL_DOCUMENT_JOB_DEFINITION } from './definitions/internal/seal-document';
+import { SIGN_WITH_USER_CERTIFICATE_JOB_DEFINITION } from './definitions/internal/sign-with-user-certificate';
+import { CHECK_CERTIFICATE_EXPIRATION_JOB_DEFINITION } from './definitions/user-certificate/check-certificate-expiration';
+import { PROVISION_USER_CERTIFICATE_JOB_DEFINITION } from './definitions/user-certificate/provision-user-certificate';
 
 /**
  * The `as const` assertion is load bearing as it provides the correct level of type inference for
@@ -31,6 +34,9 @@ export const jobsClient = new JobClient([
   BACKPORT_SUBSCRIPTION_CLAIM_JOB_DEFINITION,
   BULK_SEND_TEMPLATE_JOB_DEFINITION,
   EXECUTE_WEBHOOK_JOB_DEFINITION,
+  PROVISION_USER_CERTIFICATE_JOB_DEFINITION,
+  CHECK_CERTIFICATE_EXPIRATION_JOB_DEFINITION,
+  SIGN_WITH_USER_CERTIFICATE_JOB_DEFINITION,
 ] as const);
 
 export const jobs = jobsClient;

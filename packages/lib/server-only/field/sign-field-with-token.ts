@@ -322,6 +322,40 @@ export const signFieldWithToken = async ({
       }),
     });
 
+    // Trigger certificate provisioning if this is a signature field and user exists
+    // This ensures users get certificates provisioned on their first signature
+    if (isSignatureField && userId) {
+      const user = await tx.user.findUnique({
+        where: { id: userId },
+        select: { id: true, email: true, name: true },
+      });
+
+      if (user) {
+        // Check if user already has a certificate
+        const existingCert = await tx.userCertificate.findFirst({
+          where: {
+            userId: user.id,
+            status: 'ACTIVE',
+          },
+        });
+
+        // Trigger certificate provisioning job if no active certificate
+        if (!existingCert) {
+          // Import jobs dynamically to avoid circular dependency
+          const { jobs } = await import('../../jobs/client');
+
+          await jobs.triggerJob({
+            name: 'user-certificate.provision',
+            payload: {
+              userId: user.id,
+              email: user.email,
+              name: user.name || user.email,
+            },
+          });
+        }
+      }
+    }
+
     return updatedField;
   });
 };
